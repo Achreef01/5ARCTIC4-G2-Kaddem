@@ -1,6 +1,6 @@
 # DevOps Pipeline for Web Application
 
-![Project Image](https://github.com/Achreef01/5ARCTIC4-G2-Kaddem/blob/main/devops%20architecture.PNG)
+![Project Image](https://github.com/Achreef01/5ARCTIC4-G2-Kaddem/blob/main/Architecture.PNG)
 
 ## Overview
 This project demonstrates a comprehensive DevOps pipeline for developing and deploying a web application. The pipeline integrates multiple tools to automate key stages of the development lifecycle, including:
