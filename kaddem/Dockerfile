@@ -5,7 +5,7 @@ RUN mvn dependency:go-offline
 COPY src ./src
 RUN mvn package -DskipTests
 
-FROM openjdk:8
+FROM openjdk:8-jdk-alpine
 WORKDIR /app
 COPY --from=build app/target/kaddem-0.0.1-SNAPSHOT.jar kaddem-0.0.1.jar
 ENTRYPOINT ["java","-jar","/app/kaddem-0.0.1.jar"]
