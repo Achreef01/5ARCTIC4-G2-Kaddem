@@ -16,10 +16,12 @@ pipeline {
         }
         stage('Build Backend Docker Image') {
             steps {
+                dir('kaddem'){
                 sh 'docker build -t kaddem-backend .'
                 sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
                 sh 'docker tag kaddem-backend hammamrabet/mohamed_mrabet_5arctic4_g2:$BUILD_NUMBER'
                 sh 'docker push hammamrabet/mohamed_mrabet_5arctic4_g2:$BUILD_NUMBER'
+                }
             }
         }
 
