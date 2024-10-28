@@ -1,0 +1,26 @@
+version: '3.8'
+
+services:
+  mysql_db:
+    image: mysql:latest
+    container_name: mysql_db
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_CREDENTIALS_PSW}
+    ports:
+      - "3306:3306"
+    networks:
+      - my-network
+
+  backend_ctr:
+    image: hammamrabet/mohamed_mrabet_5arctic4_g2:${BUILD_NUMBER}
+    container_name: backend_ctr
+    ports:
+      - "8089:8089"
+    depends_on:
+      - mysql_db
+    networks:
+      - my-network
+
+networks:
+  my-network:
+    driver: bridge
