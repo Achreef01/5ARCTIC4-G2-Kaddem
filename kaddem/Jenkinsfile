@@ -15,12 +15,35 @@ pipeline {
         GROUP_ID = 'tn.esprit.spring'  // Group ID for the artifact
     }
     stages {
+
+        stage("Start Existing SonarQube and Nexus Containers") {
+            steps {
+                script {
+                    // Start Nexus container if not running
+                    sh '''
+                    if [ "$(docker ps -q -f name=nexus)" = "" ]; then
+                        docker start nexus
+                    fi
+                    '''
+
+                    // Start SonarQube container if not running
+                    sh '''
+                    if [ "$(docker ps -q -f name=sonarqube)" = "" ]; then
+                        docker start sonarqube
+                    fi
+                    '''
+                }
+            }
+        }
+
         stage('GIT') {
             steps {
                 git branch: "MohamedMrabet-5ARCTIC4-G2",
                     url: "https://github.com/Achreef01/5ARCTIC4-G2-Kaddem.git"
             }
         }
+
+
 
         stage("Maven Build") {
             steps {
@@ -78,6 +101,7 @@ pipeline {
                 }
             }
         }
+
 
         stage('Build Backend Docker Image') {
             steps {
