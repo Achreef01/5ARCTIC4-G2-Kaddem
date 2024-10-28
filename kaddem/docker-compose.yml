@@ -1,0 +1,26 @@
+version: '3.8'
+
+services:
+  mysql_db:
+    image: mysql:latest
+    container_name: mysql_db
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}  # Load from environment variable
+    ports:
+      - "3306:3306"
+    networks:
+      - my-network
+
+  backend_ctr:
+    image: amanibensassi/amanibensassi_5arctic4_g2:${BUILD_NUMBER}  # The image with dynamic tag
+    container_name: backend_ctr
+    depends_on:
+      - mysql_db
+    ports:
+      - "8089:8089"
+    networks:
+      - my-network
+
+networks:
+  my-network:
+    driver: bridge
