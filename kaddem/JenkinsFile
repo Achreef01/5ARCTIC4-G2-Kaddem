@@ -10,7 +10,7 @@ pipeline {
         NEXUS_VERSION = 'nexus3'
         NEXUS_PROTOCOL = 'http'
         NEXUS_URL = '192.168.100.207:8081' // Nexus server base URL
-        NEXUS_REPOSITORY = 'Kaddem-MohamedMrabet-5Arctic4'  // Nexus repository name
+        NEXUS_REPOSITORY = 'Kaddem-nexus'  // Nexus repository name
         CREDENTIALS_ID = 'nexus-cred'      // Jenkins credentials ID for Nexus
         GROUP_ID = 'tn.esprit.spring'  // Group ID for the artifact
     }
