@@ -6,12 +6,53 @@ pipeline {
     environment {
         DOCKERHUB_CREDENTIALS = credentials('dockerhub-credentials-id')
         MYSQL_CREDENTIALS = credentials('mysql-credentials')
+
+        NEXUS_VERSION = 'nexus3'
+        NEXUS_PROTOCOL = 'http'
+        NEXUS_URL = '192.168.28.144:8081' // Nexus server base URL
+        NEXUS_REPOSITORY = 'Kaddem-MohamedMrabet-5Arctic4'  // Nexus repository name
+        CREDENTIALS_ID = 'nexus-cred'      // Jenkins credentials ID for Nexus
+        GROUP_ID = 'tn.esprit.spring'  // Group ID for the artifact
     }
     stages {
         stage('GIT') {
             steps {
                 git branch: "MohamedMrabet-5ARCTIC4-G2",
                     url: "https://github.com/Achreef01/5ARCTIC4-G2-Kaddem.git"
+            }
+        }
+
+        stage("Maven Build") {
+            steps {
+                sh "mvn package -DskipTests=true"
+            }
+        }
+
+        stage("Upload to Nexus") {
+            steps {
+                script {
+                    def artifactId = 'kaddem'  // Define your artifact ID
+                    def version = '0.0.1-SNAPSHOT'                  // Define the version
+                    def packaging = 'jar'                // Define the packaging type (e.g., jar)
+
+                    // Correct usage of nexusArtifactUploader
+                    nexusArtifactUploader(
+                        nexusVersion: NEXUS_VERSION,
+                        protocol: NEXUS_PROTOCOL,
+                        nexusUrl: NEXUS_URL,
+                        groupId: GROUP_ID,
+                        artifactId: artifactId,
+                        version: version,
+                        repository: NEXUS_REPOSITORY,
+                        credentialsId: CREDENTIALS_ID,
+                        artifacts: [
+                            [artifactId: artifactId,
+                             classifier: '',
+                             file: "target/${artifactId}-${version}.${packaging}",
+                             type: packaging]
+                        ]
+                    )
+                }
             }
         }
 
@@ -56,4 +97,6 @@ pipeline {
             }
         }
     }
+ }
 }
+
