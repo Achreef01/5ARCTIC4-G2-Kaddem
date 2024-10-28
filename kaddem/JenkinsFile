@@ -61,11 +61,19 @@ pipeline {
             }
         }
 
+        stage('Compile') {
+            steps {
+                dir('kaddem') {
+                    sh 'mvn clean compile'
+                }
+            }
+        }
+
         stage('Scan') {
             steps {
                 dir('kaddem') {
-                    withSonarQubeEnv(installationName: 'sq1') {
-                        sh 'mvn sonar:sonar'
+                    withSonarQubeEnv('sq1') {
+                        sh 'mvn sonar:sonar -Dsonar.java.binaries=target/classes'
                     }
                 }
             }
