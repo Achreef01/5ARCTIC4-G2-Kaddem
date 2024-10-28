@@ -1,6 +1,6 @@
 pipeline {
     agent any
-    
+
     tools{
         maven "M2_HOME"
     }
@@ -19,11 +19,13 @@ pipeline {
             }
         }
         stage('Scan') {
+            dir('kaddem') {
             steps {
                 withSonarQubeEnv(installationName: 'sq1'){
                                  
                 sh 'mvn sonar:sonar'
                                  }
+            }
             }
         }
     
