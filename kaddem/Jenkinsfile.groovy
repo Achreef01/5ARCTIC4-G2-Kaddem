@@ -14,6 +14,18 @@ pipeline {
                 url: "https://github.com/Achreef01/5ARCTIC4-G2-Kaddem.git"
             }
         }
+        stage('Scan') {
+            steps {
+                withSonarQubeEnv(installationName: 'sq1'){
+                                 
+                sh 'mvn sonar:sonar'
+                                 }
+            }
+        }
+    
+
+
+
         stage('Build Backend Docker Image') {
             steps {
                 dir('kaddem'){
