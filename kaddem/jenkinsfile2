@@ -61,7 +61,7 @@ pipeline {
             }
         }
 
-   /*     stage('Compile') {
+        stage('Compile') {
             steps {
                 dir('kaddem') {
                     sh 'mvn clean compile'
@@ -77,7 +77,7 @@ pipeline {
                     }
                 }
             }
-        }*/
+        }
 
         stage('Build Backend Docker Image') {
             steps {
