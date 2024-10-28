@@ -24,7 +24,10 @@ pipeline {
 
         stage("Maven Build") {
             steps {
-                sh "mvn package -DskipTests=true"
+                 dir('kaddem') {
+                   sh "mvn package -DskipTests=true"
+                }
+                
             }
         }
 
