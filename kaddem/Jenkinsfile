@@ -92,7 +92,7 @@ pipeline {
 
         stage('Stop Old Containers') {
             steps {
-                sh 'docker network create my-network || true'
+                /*sh 'docker network create my-network || true'*/
                 sh 'docker stop mysql_db || true && docker rm mysql_db || true'
                 sh 'docker stop backend_ctr || true && docker rm backend_ctr || true'
 
