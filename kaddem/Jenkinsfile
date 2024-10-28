@@ -16,28 +16,7 @@ pipeline {
     }
     stages {
 
-        stage("Start Existing SonarQube and Nexus Containers") {
-            steps {
-                script {
-                    // Start Nexus container if not running
-                    sh '''
-                    if [ "$(docker ps -q -f name=nexus)" = "" ]; then
-                        docker start nexus
-                    fi
-                    '''
-
-                    // Start SonarQube container if not running
-                    sh '''
-                    if [ "$(docker ps -q -f name=sonarqube)" = "" ]; then
-                        docker start sonarqube
-                    fi
-                    '''
-
-                    sh 'sleep 60'
-
-                }
-            }
-        }
+        
 
         stage('GIT') {
             steps {
