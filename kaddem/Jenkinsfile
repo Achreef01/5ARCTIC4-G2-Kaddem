@@ -32,6 +32,9 @@ pipeline {
                         docker start sonarqube
                     fi
                     '''
+
+                    sh 'sleep 60'
+
                 }
             }
         }
