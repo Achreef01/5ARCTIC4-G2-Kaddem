@@ -42,7 +42,7 @@ pipeline {
                 sh 'docker run -d --network my-network -p 3306:3306 --name mysql_db -e MYSQL_ROOT_PASSWORD=$MYSQL_CREDENTIALS_PSW mysql:latest'
 
                 // Start Backend container
-                sh 'docker run -d --network my-network -p 8089:8089 --name backend_ctr hammamrabet/5ARCTIC4-G2-Kaddem:$BUILD_NUMBER'
+                sh 'docker run -d --network my-network -p 8089:8089 --name backend_ctr hammamrabet/mohamed_mrabet_5arctic4_g2:$BUILD_NUMBER'
 
                 // Start Frontend container
 
