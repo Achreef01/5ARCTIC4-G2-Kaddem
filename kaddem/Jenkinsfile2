@@ -88,7 +88,7 @@ pipeline {
         stage('Build Backend Docker Image') {
             steps {
                 dir('kaddem') {
-                    sh 'docker build 
+                    sh 'docker build \  
                          --build-arg NEXUS_URL="192.168.28.144:8081" \         
                          --build-arg ARTIFACT_PATH="<kaddem>" \           
                          --build-arg VERSION="<0.0.1-SNAPSHOT>" \
