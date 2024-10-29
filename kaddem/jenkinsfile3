@@ -1,0 +1,130 @@
+pipeline {
+    agent any
+    tools {
+        maven "M2_HOME" // Ensure 'M2_HOME' matches your Jenkins Maven installation name
+    }
+    environment {
+        DOCKERHUB_CREDENTIALS = credentials('dockerhub-credentials-id')
+        MYSQL_CREDENTIALS = credentials('mysql-credentials')
+        
+        NEXUS_VERSION = 'nexus3'
+        NEXUS_PROTOCOL = 'http'
+        NEXUS_URL = '192.168.100.207:8081' // Nexus server base URL
+        NEXUS_REPOSITORY = 'Kaddem-nexus'  // Nexus repository name
+        CREDENTIALS_ID = 'nexus-cred'      // Jenkins credentials ID for Nexus
+        GROUP_ID = 'tn.esprit.spring'  // Group ID for the artifact
+    }
+    
+    stages {
+        stage('GIT') {
+            steps {
+                git branch: "AmaniBenSassi-5ARCTIC4-G2",
+                    url: "https://github.com/Achreef01/5ARCTIC4-G2-Kaddem.git"
+            }
+        }
+
+        stage("Maven Build") {
+            steps {
+                dir('kaddem') {
+                    sh "mvn package -DskipTests=true"
+                }
+            }
+        }
+
+        stage("Upload to Nexus") {
+            steps {
+                dir('kaddem') {
+                    script {
+                        def artifactId = 'kaddem'  // Define your artifact ID
+                        def version = '0.0.1-SNAPSHOT' // Define the version
+                        def packaging = 'jar' // Define the packaging type (e.g., jar)
+
+                        // Correct usage of nexusArtifactUploader
+                        nexusArtifactUploader(
+                            nexusVersion: NEXUS_VERSION,
+                            protocol: NEXUS_PROTOCOL,
+                            nexusUrl: NEXUS_URL,
+                            groupId: GROUP_ID,
+                            artifactId: artifactId,
+                            version: version,
+                            repository: NEXUS_REPOSITORY,
+                            credentialsId: CREDENTIALS_ID,
+                            artifacts: [
+                                [artifactId: artifactId,
+                                 classifier: '',
+                                 file: "target/${artifactId}-${version}.${packaging}",
+                                 type: packaging]
+                            ]
+                        )
+                    }
+                }
+            }
+        }
+
+        stage('Compile') {
+            steps {
+                dir('kaddem') {
+                    sh 'mvn clean compile'
+                }
+            }
+        }
+
+        stage('Scan') {
+            steps {
+                dir('kaddem') {
+                    withSonarQubeEnv('sq1') {
+                        sh 'mvn sonar:sonar -Dsonar.java.binaries=target/classes'
+                    }
+                }
+            }
+        }
+
+        stage('Build Backend Docker Image') {
+            steps {
+                dir('kaddem') {
+                    sh 'docker build --build-arg NEXUS_URL="192.168.100.207:8081" --build-arg ARTIFACT_PATH="tn/esprit/spring/kaddem" --build-arg VERSION="0.0.1-SNAPSHOT"-t kaddem-backend .'
+                    sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
+                    sh 'docker tag kaddem-backend amanibensassi/amanibensassi_5arctic4_g2:$BUILD_NUMBER'
+                    sh 'docker push amanibensassi/amanibensassi_5arctic4_g2:$BUILD_NUMBER'
+                }
+            }
+        }
+
+        stage('Handle containers and network ') {
+            steps {
+                // Create Docker network
+                sh 'docker network create my-network || true'
+
+                // Stop and remove old containers
+                sh 'docker stop mysql_db || true'
+                sh 'docker rm mysql_db || true'
+                sh 'docker stop backend_ctr || true'
+                sh 'docker rm backend_ctr || true'
+}}
+/*
+                // Start MySQL container
+                sh 'docker run -d --network my-network -p 3306:3306 --name mysql_db -e MYSQL_ROOT_PASSWORD=$MYSQL_CREDENTIALS_PSW mysql:latest'
+
+                // Start Backend container
+                sh 'docker run -d --network my-network -p 8089:8089 --name backend_ctr amanibensassi/amanibensassi_5arctic4_g2:$BUILD_NUMBER'
+            }
+        }
+    }*/
+    stage('Deploy Application') {
+    steps {
+        script {
+            dir('kaddem') {
+            // Update Docker Compose environment variables
+            withEnv(["MYSQL_ROOT_PASSWORD=${MYSQL_CREDENTIALS_PSW}", "BUILD_NUMBER=${env.BUILD_NUMBER}"]) {
+                sh 'docker-compose down'  // Stop any running containers
+                sh 'docker-compose up -d' // Start containers with updated configuration
+            }
+                }
+
+        }
+    }
+}
+        
+    }
+    
+}
