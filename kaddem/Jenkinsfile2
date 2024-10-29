@@ -88,13 +88,7 @@ pipeline {
         stage('Build Backend Docker Image') {
             steps {
                 dir('kaddem') {
-                    sh 'docker build \  
-                         --build-arg NEXUS_URL="192.168.28.144:8081" \         
-                         --build-arg ARTIFACT_PATH="<kaddem>" \           
-                         --build-arg VERSION="<0.0.1-SNAPSHOT>" \
-                    
-                    
-                    -t kaddem-backend .'
+                    sh 'docker build --build-arg NEXUS_URL="192.168.28.144:8081" --build-arg ARTIFACT_PATH="<kaddem>" --build-arg VERSION="<0.0.1-SNAPSHOT>" -t kaddem-backend .'
                     
                     sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
                     sh 'docker tag kaddem-backend hammamrabet/mohamed_mrabet_5arctic4_g2:$BUILD_NUMBER'
