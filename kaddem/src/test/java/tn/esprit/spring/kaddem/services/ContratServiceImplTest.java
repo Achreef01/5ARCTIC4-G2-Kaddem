@@ -36,7 +36,7 @@ import tn.esprit.spring.kaddem.repositories.EtudiantRepository;
 
 @ContextConfiguration(classes = {ContratServiceImpl.class})
 @ExtendWith(SpringExtension.class)
-class ContratServiceImplDiffblueTest {
+class ContratServiceImplTest {
     @MockBean
     private ContratRepository contratRepository;
 
