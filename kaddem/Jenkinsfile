@@ -85,11 +85,19 @@ pipeline {
         }
 
         stage('Login') {
-            sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
+            steps {
+                dir('kaddem') {
+                    sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
+                }
+            }
         }
 
         stage('Push') {
-            sh 'docker push takwa2/kaddem-backend:latest'
+            steps {
+                dir('kaddem') {
+                    sh 'docker push takwa2/kaddem-backend:latest'
+                }
+            }
         }
 
     }
