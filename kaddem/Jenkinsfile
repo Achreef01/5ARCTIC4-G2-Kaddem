@@ -1,6 +1,10 @@
 pipeline {
     agent any
 
+    environment {
+            IMAGE_TAG = "${env.BUILD_NUMBER}"
+    }
+
     stages {
         stage('Git') {
             steps {
@@ -41,6 +45,18 @@ pipeline {
             }
         }
 
+        stage('JaCoCo') {
+            steps {
+               dir('kaddem') {
+                step([$class: 'JacocoPublisher',
+                    execPattern: '/target/jacoco.exec',
+                    classPattern: '/classes',
+                    sourcePattern: '/src',
+                    exclusionPattern: '/target//,/*Test,/_javassist/*'])
+                }
+            }
+        }
+
         stage('Sonarqube analysis') {
             steps {
                 dir('kaddem') {
@@ -51,12 +67,25 @@ pipeline {
             }
         }
 
-        stage('Deploy to Nexus') {
-            steps {
-                dir('kaddem') {
-                    sh 'mvn deploy'
-                }
-            }
-        }
+    //    stage('Deploy to Nexus') {
+    //        steps {
+    //            dir('kaddem') {
+    //                sh 'mvn deploy'
+    //            }
+    //        }
+    //    }
+
+    //    stage('Build backend docker image') {
+    //                steps {
+    //                    dir('kaddem') {
+    //                        sh 'docker build -t $DOCKERHUB_USERNAME/kaddem-backend:$IMAGE_TAG .'
+    //                    }
+    //                }
+    //    }
+
+    //    stage('Push images to Dockerhub') {
+    //            sh 'docker login -u $DOCKERHUB_USERNAME -p $DOCKERHUB_PASSWORD'
+    //            sh 'docker push $DOCKERHUB_USERNAME/kaddem-backend:$IMAGE_TAG'
+    //    }
     }
 }
