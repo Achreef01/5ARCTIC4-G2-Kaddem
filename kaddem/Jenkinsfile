@@ -1,0 +1,62 @@
+pipeline {
+    agent any
+
+    stages {
+        stage('Git') {
+            steps {
+                git branch: 'TakwaSAKOUHI-5ARCTIC4-G2',
+                url: 'https://github.com/Achreef01/5ARCTIC4-G2-Kaddem.git'
+            }
+        }
+
+        stage('MVN CLEAN') {
+            steps {
+                dir('kaddem') {
+                    sh 'mvn clean'
+                }
+            }
+        }
+
+        stage('MVN COMPILE') {
+            steps {
+                dir('kaddem') {
+                    sh 'mvn compile'
+                }
+            }
+        }
+
+        stage('MVN TEST') {
+            steps {
+                dir('kaddem') {
+                    sh 'mvn clean test'
+                }
+            }
+        }
+
+        stage('MVN BUILD') {
+            steps {
+                dir('kaddem') {
+                    sh 'mvn install'
+                }
+            }
+        }
+
+        stage('Sonarqube analysis') {
+            steps {
+                dir('kaddem') {
+                    withSonarQubeEnv('sonarqube'){
+                        sh 'mvn sonar:sonar'
+                    }
+                }
+            }
+        }
+
+        stage('Deploy to Nexus') {
+            steps {
+                dir('kaddem') {
+                    sh 'mvn deploy'
+                }
+            }
+        }
+    }
+}
