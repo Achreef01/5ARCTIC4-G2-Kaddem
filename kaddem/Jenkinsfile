@@ -77,19 +77,13 @@ pipeline {
     //        }
     //    }
 
-    stage('Build backend docker image') {
-                steps {
-                    dir('kaddem') {
-                        script {
-                            if (fileExists('target/kaddem.jar')) {
-                                sh 'docker build -t takwa2/kaddem-backend:latest .'
-                            } else {
-                                error("target/kaddem.jar not found. Maven build may have failed.")
-                            }
-                        }
-                    }
+        stage('Build backend docker image') {
+            steps {
+                dir('kaddem') {
+                    sh 'docker build -t takwa2/kaddem-backend:latest .'
                 }
-    }
+            }
+        }
 
         stage('Login') {
             steps {
