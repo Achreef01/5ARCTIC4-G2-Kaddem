@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     environment {
-            IMAGE_TAG = "${env.BUILD_NUMBER}"
+        DOCKERHUB_CREDENTIALS=credentials('dockerhub')
     }
 
     stages {
@@ -76,17 +76,21 @@ pipeline {
     //        }
     //    }
 
-    //    stage('Build backend docker image') {
-    //                steps {
-    //                    dir('kaddem') {
-    //                        sh 'docker build -t $DOCKERHUB_USERNAME/kaddem-backend:$IMAGE_TAG .'
-    //                    }
-    //                }
-    //    }
+        stage('Build backend docker image') {
+            steps {
+                dir('kaddem') {
+                    sh 'docker build -t takwa2/kaddem-backend:latest .'
+                }
+            }
+        }
 
-    //    stage('Push images to Dockerhub') {
-    //            sh 'docker login -u $DOCKERHUB_USERNAME -p $DOCKERHUB_PASSWORD'
-    //            sh 'docker push $DOCKERHUB_USERNAME/kaddem-backend:$IMAGE_TAG'
-    //    }
+        stage('Login') {
+            sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
+        }
+
+        stage('Push') {
+            sh 'docker push takwa2/kaddem-backend:latest'
+        }
+
     }
 }
