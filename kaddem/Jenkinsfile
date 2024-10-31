@@ -41,7 +41,6 @@ pipeline {
             steps {
                 dir('kaddem') {
                     sh 'mvn install'
-                    sh 'ls target'
                 }
             }
         }
