@@ -32,12 +32,12 @@ services:
       - SPRING_DATASOURCE_PASSWORD=${MYSQL_ROOT_PASSWORD}
 
   frontend_ctr:
-    image: achrefochi01/kaddem-frontend:25
+    image: achrefochi01/kaddem-frontend:26
     container_name: frontend_ctr
     depends_on:
       - backend_ctr
     ports:
-      - "80:80"
+      - "4200:80"
     networks:
       - my-network
 
