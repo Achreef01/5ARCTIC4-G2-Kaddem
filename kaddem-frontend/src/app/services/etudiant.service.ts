@@ -7,7 +7,7 @@ import { Etudiant } from '../models/Etudiant';
   providedIn: 'root'
 })
 export class EtudiantService {
-  private baseUrl = 'http://backend_ctr:8089/kaddem/etudiant'; 
+  private baseUrl = 'http://192.168.33.10:8089/kaddem/etudiant'; 
 
   constructor(private http: HttpClient) { }
 

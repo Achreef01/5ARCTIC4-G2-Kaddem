@@ -7,7 +7,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class EquipeService {
-  private baseUrl = 'http://backend_ctr:8089/kaddem/equipe'; 
+  private baseUrl = 'http://192.168.33.10:8089/kaddem/equipe'; 
 
   constructor(private http: HttpClient) { }
 
