@@ -1,10 +1,10 @@
-# PersistentVolumeClaim for MySQL Storage
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   name: mysql-pv-claim
+  namespace: kaddem
   labels:
-    app: kaddem-db 
+    app: kaddemdb 
 spec:
   accessModes:
     - ReadWriteOnce
@@ -16,15 +16,16 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: deploymentdb
+  namespace: kaddem
 spec:
   selector:
     matchLabels:
-      app: kaddem-db 
+      app: kaddemdb 
   replicas: 1
   template:
     metadata:
       labels:
-        app: kaddem-db 
+        app: kaddemdb 
     spec:
       containers:
         - name: kaddemsql
@@ -37,29 +38,30 @@ spec:
             - name: MYSQL_DATABASE
               value: kaddem\db
           volumeMounts:
-          - name: mysql-persistent-storage
-            mountPath: /var/lib/mysql
+            - name: mysql-persistent-storage
+              mountPath: /var/lib/mysql
       volumes:
-      - name: mysql-persistent-storage
-        persistentVolumeClaim:
-          claimName: mysql-pv-claim
+        - name: mysql-persistent-storage
+          persistentVolumeClaim:
+            claimName: mysql-pv-claim
 ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: deploymentback
+  namespace: kaddem
 spec:
   selector:
     matchLabels:
-      app: kaddemback 
+      app: kaddemback
   replicas: 1
   template:
     metadata:
       labels:
-        app: kaddemback 
+        app: kaddemback
     spec:
       containers:
-        - name: espritgatherspring
+        - name: kaddemspring
           image: hammamrabet/mohamed_mrabet_5arctic4_g2:latest
           ports:
             - containerPort: 8089
@@ -68,26 +70,28 @@ apiVersion: v1
 kind: Service
 metadata:
   name: spring-service
+  namespace: kaddem
 spec:
   selector:
-    app: kaddemback 
+    app: kaddemback
   type: NodePort
   ports:
-  - protocol: TCP
-    port: 8089
-    targetPort: 8089
-    nodePort: 30002 # Specifying node port for external access
+    - protocol: TCP
+      port: 8089
+      targetPort: 8089
+      nodePort: 30002
 ---
 apiVersion: v1
 kind: Service
 metadata:
   name: sql-service
+  namespace: kaddem
 spec:
   selector:
-    app: kaddem-db 
+    app: kaddemdb 
   type: NodePort
   ports:
-  - protocol: TCP
-    port: 3306
-    targetPort: 3306
-    nodePort: 30003 # Specifying node port for external access
+    - protocol: TCP
+      port: 3306
+      targetPort: 3306
+      nodePort: 30003
