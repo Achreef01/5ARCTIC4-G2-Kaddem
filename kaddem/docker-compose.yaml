@@ -31,6 +31,17 @@ services:
       - SPRING_DATASOURCE_USERNAME=root
       - SPRING_DATASOURCE_PASSWORD=${MYSQL_ROOT_PASSWORD}
 
+  frontend_ctr:
+    image: achrefochi01/kaddem-frontend:23
+    container_name: frontend_ctr
+    depends_on:
+      backend_ctr:
+        condition: service_healthy
+    ports:
+      - "4200:80"
+    networks:
+      - my-network
+
 networks:
   my-network:
     driver: bridge
