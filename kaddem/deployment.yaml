@@ -21,7 +21,7 @@ spec:
             - name: MYSQL_ROOT_PASSWORD
               value: 1234
             - name: MYSQL_DATABASE
-              value: kaddem_db 
+              value: kaddem\db 
 ---
 apiVersion: apps/v1
 kind: Deployment
