@@ -45,7 +45,7 @@ pipeline {
             }
         }
 
-        stage('JaCoCo') {
+    /*    stage('JaCoCo') {
             steps {
                 dir('kaddem') {
                     step([$class: 'JacocoPublisher',
@@ -57,7 +57,7 @@ pipeline {
                 }
             }
         }
-
+*/
     /*    stage('Sonarqube analysis') {
             steps {
                 dir('kaddem') {
