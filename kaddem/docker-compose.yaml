@@ -20,8 +20,7 @@ services:
     image: achrefochi01/kaddem-achrefochi-5arctic4:${BUILD_NUMBER}
     container_name: backend_ctr
     depends_on:
-      mysql_db:
-        condition: service_healthy
+      - mysql_db  # Simply depend on mysql_db without health condition
     ports:
       - "8089:8089"
     networks:
@@ -35,17 +34,11 @@ services:
     image: achrefochi01/kaddem-frontend:23
     container_name: frontend_ctr
     depends_on:
-      backend_ctr:
-        condition: service_healthy
+      - backend_ctr
     ports:
       - "4200:80"
     networks:
       - my-network
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost"]
-      interval: 30s
-      timeout: 10s
-      retries: 5
 
 networks:
   my-network:
