@@ -11,7 +11,7 @@ import tn.esprit.spring.kaddem.services.IContratService;
 
 import java.util.Date;
 import java.util.List;
-
+@CrossOrigin(maxAge = 3600)
 @RestController
 @AllArgsConstructor
 @RequestMapping("/contrat")
