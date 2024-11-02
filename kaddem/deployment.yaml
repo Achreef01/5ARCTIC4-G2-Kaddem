@@ -1,0 +1,93 @@
+# PersistentVolumeClaim for MySQL Storage
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: mysql-pv-claim
+  labels:
+    app: kaddem-db 
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 256Mi
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: deploymentdb
+spec:
+  selector:
+    matchLabels:
+      app: kaddem-db 
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: kaddem-db 
+    spec:
+      containers:
+        - name: kaddemsql
+          image: mysql:latest
+          ports:
+            - containerPort: 3306
+          env:
+            - name: MYSQL_ROOT_PASSWORD
+              value: 1234
+            - name: MYSQL_DATABASE
+              value: kaddem\db
+          volumeMounts:
+          - name: mysql-persistent-storage
+            mountPath: /var/lib/mysql
+      volumes:
+      - name: mysql-persistent-storage
+        persistentVolumeClaim:
+          claimName: mysql-pv-claim
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: deploymentback
+spec:
+  selector:
+    matchLabels:
+      app: kaddemback 
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: kaddemback 
+    spec:
+      containers:
+        - name: espritgatherspring
+          image: hammamrabet/mohamed_mrabet_5arctic4_g2:latest
+          ports:
+            - containerPort: 8089
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: spring-service
+spec:
+  selector:
+    app: kaddemback 
+  type: NodePort
+  ports:
+  - protocol: TCP
+    port: 8089
+    targetPort: 8089
+    nodePort: 30002 # Specifying node port for external access
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: sql-service
+spec:
+  selector:
+    app: kaddem-db 
+  type: NodePort
+  ports:
+  - protocol: TCP
+    port: 3306
+    targetPort: 3306
+    nodePort: 30003 # Specifying node port for external access
