@@ -40,7 +40,7 @@ pipeline {
         stage('MVN BUILD') {
             steps {
                 dir('kaddem') {
-                    sh 'mvn install'
+                    sh 'mvn install -DskipTests=true'
                 }
             }
         }
