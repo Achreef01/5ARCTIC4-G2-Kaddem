@@ -84,7 +84,7 @@ pipeline {
             steps {
                 
                 script {
-                    kubernetesDeploy configs: 'kaddem/deployment.yaml', kubeconfigId: 'kubernetes_config'
+                    kubernetesDeploy configs: 'kaddem/deployment.yaml', kubeconfigId: 'kube-id'
                 }
              
           }
