@@ -45,19 +45,8 @@ pipeline {
             }
         }
 
-    /*    stage('JaCoCo') {
-            steps {
-                dir('kaddem') {
-                    step([$class: 'JacocoPublisher',
-                        execPattern: '**/target/*.exec',               // Use wildcard for exec files
-                        classPattern: '**/classes',                    // Use wildcard for classes
-                        sourcePattern: '**/src',                       // Use wildcard for source files
-                        exclusionPattern: '**/target/**,**/*Test,**/_javassist/**'  // Wildcards in exclusion pattern
-                    ])
-                }
-            }
-        }
-*/
+        
+
     /*    stage('Sonarqube analysis') {
             steps {
                 dir('kaddem') {
