@@ -67,7 +67,7 @@ pipeline {
                 }
             }
         }
-*/
+
         stage('Deploy to Nexus') {
             steps {
                 dir('kaddem') {
@@ -75,8 +75,8 @@ pipeline {
                 }
             }
         }
-
-/*        stage('Build backend docker image') {
+*/
+        stage('Build backend docker image') {
             steps {
                 dir('kaddem') {
                     sh 'docker build -t takwa2/kaddem-backend:latest .'
@@ -115,6 +115,6 @@ pipeline {
                 }
             }
         }
-*/
+
     }
 }
