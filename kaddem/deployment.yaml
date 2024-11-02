@@ -1,3 +1,4 @@
+# MySQL Deployment
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -22,7 +23,10 @@ spec:
               value: 1234
             - name: MYSQL_DATABASE
               value: kaddem
+
 ---
+
+# Spring Boot Deployment with initContainer
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -37,12 +41,27 @@ spec:
       labels:
         app: kaddemback
     spec:
+      # initContainer to wait for MySQL to be ready
+      initContainers:
+        - name: init-sql-check
+          image: busybox
+          command: ['sh', '-c', 'until nc -z -v -w30 sql-service 3306; do echo "Waiting for database connection..."; sleep 5; done']
       containers:
         - name: kaddemspring
           image: hammamrabet/mohamed_mrabet_5arctic4_g2:82
           ports:
             - containerPort: 8089
+          env:
+            - name: SPRING_DATASOURCE_URL
+              value: jdbc:mysql://sql-service:3306/kaddem?createDatabaseIfNotExist=true&useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC
+            - name: SPRING_DATASOURCE_USERNAME
+              value: root
+            - name: SPRING_DATASOURCE_PASSWORD
+              value: 1234
+
 ---
+
+# Spring Boot Service
 apiVersion: v1
 kind: Service
 metadata:
@@ -56,7 +75,10 @@ spec:
       port: 8089
       targetPort: 8089
       nodePort: 30003
+
 ---
+
+# MySQL Service
 apiVersion: v1
 kind: Service
 metadata:
@@ -64,9 +86,8 @@ metadata:
 spec:
   selector:
     app: kaddemdb 
-  type: NodePort
+  type: ClusterIP
   ports:
     - protocol: TCP
       port: 3306
       targetPort: 3306
-      nodePort: 30002
