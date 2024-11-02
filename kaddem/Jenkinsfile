@@ -107,8 +107,10 @@ pipeline {
 */
         stage("Docker Compose ") {
             steps {
-                sh'docker-compose down'
-                sh 'docker-compose up -d'
+                dir('kaddem') {
+                    sh'docker-compose down'
+                    sh 'docker-compose up -d'
+                }
             }
         }
     }
