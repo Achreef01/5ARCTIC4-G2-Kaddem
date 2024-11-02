@@ -39,7 +39,7 @@ spec:
     spec:
       containers:
         - name: kaddemspring
-          image: hammamrabet/mohamed_mrabet_5arctic4_g2:latest
+          image: hammamrabet/mohamed_mrabet_5arctic4_g2:70
           imagePullPolicy: IfNotPresent
 
           ports:
