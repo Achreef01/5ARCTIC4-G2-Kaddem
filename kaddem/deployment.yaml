@@ -2,6 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: deploymentdb
+  namespace: kaddem
 spec:
   selector:
     matchLabels:
@@ -21,12 +22,14 @@ spec:
             - name: MYSQL_ROOT_PASSWORD
               value: 1234
             - name: MYSQL_DATABASE
-              value: kaddem_db  # Corrected value
+              value: kaddem_db
+          # Remove the volumeMounts section as there's no persistent volume
 ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: deploymentback
+  namespace: kaddem
 spec:
   selector:
     matchLabels:
@@ -47,6 +50,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: spring-service
+  namespace: kaddem
 spec:
   selector:
     app: kaddemback
@@ -61,6 +65,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: sql-service
+  namespace: kaddem
 spec:
   selector:
     app: kaddemdb 
