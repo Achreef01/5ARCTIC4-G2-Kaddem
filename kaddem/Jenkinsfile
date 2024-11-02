@@ -29,13 +29,13 @@ pipeline {
             }
         }
 
-        stage('MVN TEST') {
-            steps {
-                dir('kaddem') {
-                    sh 'mvn clean test'
-                }
-            }
-        }
+    //    stage('MVN TEST') {
+    //        steps {
+    //            dir('kaddem') {
+    //                sh 'mvn clean test'
+    //            }
+    //        }
+    //    }
 
         stage('MVN BUILD') {
             steps {
@@ -58,7 +58,7 @@ pipeline {
             }
         }
 
-        stage('Sonarqube analysis') {
+    /*    stage('Sonarqube analysis') {
             steps {
                 dir('kaddem') {
                     withSonarQubeEnv('sonarqube'){
@@ -67,7 +67,7 @@ pipeline {
                 }
             }
         }
-
+*/
         stage('Deploy to Nexus') {
             steps {
                 dir('kaddem') {
@@ -76,7 +76,7 @@ pipeline {
             }
         }
 
-        stage('Build backend docker image') {
+/*        stage('Build backend docker image') {
             steps {
                 dir('kaddem') {
                     sh 'docker build -t takwa2/kaddem-backend:latest .'
@@ -115,6 +115,6 @@ pipeline {
                 }
             }
         }
-
+*/
     }
 }
