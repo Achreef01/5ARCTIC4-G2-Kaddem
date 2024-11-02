@@ -4,9 +4,9 @@ services:
   backend:
     image: takwa2/kaddem-backend:latest
     environment:
-      - SPRING_DATASOURCE_URL=jdbc:mysql://db:3306/kaddemdb
+      - SPRING_DATASOURCE_URL=jdbc:mysql://db:3306/kaddem
       - SPRING_DATASOURCE_USERNAME=root
-      - SPRING_DATASOURCE_PASSWORD=root
+      - SPRING_DATASOURCE_PASSWORD=
     depends_on:
       - db
     ports:
