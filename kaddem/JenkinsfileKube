@@ -82,11 +82,11 @@ pipeline {
         }
         stage('Deploy deployment and service file') {
             steps {
-                dir('kaddem') {
+                
                 script {
-                    kubernetesDeploy configs: 'deployment.yaml', kubeconfigId: 'kube-id'
+                    kubernetesDeploy configs: 'kaddem/deployment.yaml', kubeconfigId: 'kube-id'
                 }
-            } 
+             
           }
         }
 
