@@ -20,8 +20,8 @@ services:
   db:
     image: mysql:5.7
     environment:
-      MYSQL_DATABASE: kaddemdb
-      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: kaddem
+      MYSQL_ROOT_PASSWORD: 
     ports:
       - "3306:3306"
     volumes:
