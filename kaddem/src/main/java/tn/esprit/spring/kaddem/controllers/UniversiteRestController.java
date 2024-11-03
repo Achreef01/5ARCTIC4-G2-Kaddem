@@ -9,7 +9,7 @@ import tn.esprit.spring.kaddem.services.IUniversiteService;
 
 import java.util.List;
 import java.util.Set;
-
+@CrossOrigin(origins = "*")
 @RestController
 @AllArgsConstructor
 @RequestMapping("/universite")
