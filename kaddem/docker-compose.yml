@@ -33,7 +33,7 @@ services:
     ports:
       - "4200:80"
     networks:
-      - my-network
+      - kaddem_my-network
 
 networks:
   my-network:
