@@ -39,7 +39,7 @@ services:
       backend_ctr:
         condition: service_healthy  # Wait for backend to be healthy
     ports:
-      - "4200:4200" 
+      - "4200:80" 
     networks:
       - my-network
 
