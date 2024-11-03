@@ -5,7 +5,7 @@ services:
     image: mysql:latest
     container_name: mysql_db
     environment:
-      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}  # Load from environment variable
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}  
     ports:
       - "3306:3306"
     networks:
@@ -17,7 +17,7 @@ services:
       retries: 5
  
   backend_ctr:
-    image: hammamrabet/mohamed_mrabet_5arctic4_g2:${BUILD_NUMBER}  # The image with dynamic tag
+    image: hammamrabet/mohamed_mrabet_5arctic4_g2:${BUILD_NUMBER} 
     container_name: backend_ctr
     depends_on:
       mysql_db:
@@ -26,8 +26,23 @@ services:
       - "8089:8089"
     networks:
       - my-network
- 
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://192.168.28.144:8089 || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  frontend_ctr:
+    image: hammamrabet/mohamed_mrabet_5arctic4_g2_front:${BUILD_NUMBER}
+    container_name: frontend_ctr
+    depends_on:
+      backend_ctr:
+        condition: service_healthy  # Wait for backend to be healthy
+    ports:
+      - "4200:4200" 
+    networks:
+      - my-network
+
 networks:
   my-network:
     driver: bridge
-
