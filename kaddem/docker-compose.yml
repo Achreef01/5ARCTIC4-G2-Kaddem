@@ -1,6 +1,18 @@
 version: '3.8'
 
 services:
+  db:
+    image: mysql:5.7
+    environment:
+      MYSQL_DATABASE: kaddem
+      MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
+    ports:
+      - "3306:3306"
+    networks:
+      - my-network
+    volumes:
+      - db_data:/var/lib/mysql
+
   backend:
     image: takwa2/kaddem-backend:latest
     networks:
@@ -22,19 +34,6 @@ services:
       - my-network
     ports:
       - "80:80"
-
-  db:
-    image: mysql:5.7
-    environment:
-      MYSQL_DATABASE: kaddem
-      MYSQL_ALLOW_EMPTY_PASSWORD: "yes"  # Allow for an empty password
-      MYSQL_ROOT_HOST: '%'
-    ports:
-      - "3306:3306"
-    networks:
-      - my-network
-    volumes:
-      - db_data:/var/lib/mysql
 
 volumes:
   db_data:
