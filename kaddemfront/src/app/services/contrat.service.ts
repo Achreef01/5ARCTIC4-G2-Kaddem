@@ -8,7 +8,7 @@ import {Contrat} from "../models/Contrat";
 })
 export class ContratService {
 
-  private baseUrl = 'http://localhost:8089/kaddem/contrat'; // Update the base URL
+  private baseUrl = 'http://192.168.100.207:8089/kaddem/contrat'; // Update the base URL
 
   constructor(private http: HttpClient) {}
 
