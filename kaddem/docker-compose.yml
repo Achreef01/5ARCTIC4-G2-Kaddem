@@ -29,7 +29,6 @@ services:
       MYSQL_DATABASE: kaddem
       MYSQL_ALLOW_EMPTY_PASSWORD: "yes"  # Allow for an empty password
       MYSQL_ROOT_HOST: '%'
-      MYSQL_ROOT_PASSWORD: ""  # Explicitly set to empty
     ports:
       - "3306:3306"
     networks:
