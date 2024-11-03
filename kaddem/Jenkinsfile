@@ -3,6 +3,7 @@ pipeline {
 
     environment {
         DOCKERHUB_CREDENTIALS=credentials('dockerhub')
+        MYSQL_CREDENTIALS = credentials('mysql')
     }
 
     stages {
@@ -108,9 +109,10 @@ pipeline {
         stage("Docker Compose ") {
             steps {
                 dir('kaddem') {
-                    sh 'docker stop mysql_db || true && docker rm mysql_db || true'
-                    sh'docker-compose down'
-                    sh 'docker-compose up -d'
+                    withEnv(["MYSQL_ROOT_PASSWORD=${MYSQL_CREDENTIALS_PSW}", "BUILD_NUMBER=${env.BUILD_NUMBER}"]) {
+                        sh 'docker stop mysql_db || true && docker rm mysql_db || true'
+                        sh 'docker-compose down'
+                        sh 'docker-compose up -d'
                 }
             }
         }
