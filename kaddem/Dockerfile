@@ -1,5 +1,5 @@
 # Use a base Java image
-FROM openjdk:8
+FROM openjdk:8-jre-alpine
 
 # Set environment variables for Nexus details
 ENV NEXUS_URL=http://192.168.56.4:8081
