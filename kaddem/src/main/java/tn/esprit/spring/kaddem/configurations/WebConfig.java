@@ -13,5 +13,6 @@ public class WebConfig implements WebMvcConfigurer {
         registry.addMapping("/**")
                 .allowedOrigins("http://192.168.33.10:4200") // Limit to specific origins
                 .allowedHeaders("Content-Type", "Authorization") // Use specific headers instead of "*"
+                .allowCredentials(false); // Only use if absolutely necessary
     }
 }
