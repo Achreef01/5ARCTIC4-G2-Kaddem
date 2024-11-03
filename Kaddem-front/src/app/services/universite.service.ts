@@ -7,7 +7,7 @@ import { Universite } from '../models/Universite';
   providedIn: 'root',
 })
 export class UniversiteService {
-  private baseUrl = 'http://localhost:8089/kaddem/universite'; // Update the base URL
+  private baseUrl = 'http://192.168.28.144:8089/kaddem/universite'; // Update the base URL
 
   constructor(private http: HttpClient) {}
 
