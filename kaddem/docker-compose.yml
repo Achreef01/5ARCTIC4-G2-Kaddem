@@ -26,9 +26,8 @@ services:
   db:
     image: mysql:5.7
     environment:
-      MYSQL_ROOT_PASSWORD: ""  # Make sure this is set to an empty string
       MYSQL_DATABASE: kaddem
-      MYSQL_ALLOW_EMPTY_PASSWORD: 'yes'  # Allow empty password
+      MYSQL_ALLOW_EMPTY_PASSWORD: 'yes'
     ports:
       - "3306:3306"
     networks:
