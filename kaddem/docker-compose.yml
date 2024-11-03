@@ -6,7 +6,7 @@ services:
     environment:
       - SPRING_DATASOURCE_URL=jdbc:mysql://db:3306/kaddem
       - SPRING_DATASOURCE_USERNAME=root
-      - SPRING_DATASOURCE_PASSWORD=
+      - SPRING_DATASOURCE_PASSWORD=1234
     depends_on:
       - db
     ports:
@@ -21,7 +21,7 @@ services:
     image: mysql:5.7
     environment:
       MYSQL_DATABASE: kaddem
-      MYSQL_ALLOW_EMPTY_PASSWORD: 'yes'
+      MYSQL_ROOT_PASSWORD: 1234
     ports:
       - "3306:3306"
     volumes:
