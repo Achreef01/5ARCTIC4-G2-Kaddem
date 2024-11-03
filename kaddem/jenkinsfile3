@@ -87,6 +87,12 @@ pipeline {
                     sh 'docker tag kaddem-backend amanibensassi/amanibensassi_5arctic4_g2:$BUILD_NUMBER'
                     sh 'docker push amanibensassi/amanibensassi_5arctic4_g2:$BUILD_NUMBER'
                 }
+                dir('kaddemfront') {
+                    sh 'docker build -t kaddem-frontend .'
+                    sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
+                    sh 'docker tag kaddem-frontend amanibensassi/amanibensassi_5arctic4_g2_front:$BUILD_NUMBER'
+                    sh 'docker push amanibensassi/amanibensassi_5arctic4_g2_front:$BUILD_NUMBER'
+                }
             }
         }
 
@@ -100,6 +106,8 @@ pipeline {
                 sh 'docker rm mysql_db || true'
                 sh 'docker stop backend_ctr || true'
                 sh 'docker rm backend_ctr || true'
+                sh 'docker stop frontend_ctr || true'
+                sh 'docker rm frontend_ctr || true'
 }}
 /*
                 // Start MySQL container
@@ -107,6 +115,9 @@ pipeline {
 
                 // Start Backend container
                 sh 'docker run -d --network my-network -p 8089:8089 --name backend_ctr amanibensassi/amanibensassi_5arctic4_g2:$BUILD_NUMBER'
+
+                // Start Backend container
+                sh 'docker run -d --network my-network -p 8089:8089 --name frontend_ctr amanibensassi/amanibensassi_5arctic4_g2_front:$BUILD_NUMBER'
             }
         }
     }*/
