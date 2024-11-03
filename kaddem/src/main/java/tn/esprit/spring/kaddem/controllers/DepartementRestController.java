@@ -9,7 +9,8 @@ import java.util.List;
 
 @RestController
 @AllArgsConstructor
-@CrossOrigin(origins = "*")
+@CrossOrigin(origins = "http://192.168.28.144:4200", maxAge = 3600, allowCredentials = "true")
+
 @RequestMapping("/departement")
 public class DepartementRestController {
 	IDepartementService departementService;
