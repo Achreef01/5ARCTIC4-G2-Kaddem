@@ -105,7 +105,7 @@ pipeline {
             }
         }
 
-        stage('Build Backend Docker Image') {
+        stage('Build Frontend Docker Image') {
             steps {
                 dir('Kaddem-front') {
                     sh 'docker build -t kaddem-frontend .'
@@ -130,8 +130,9 @@ pipeline {
                 sh 'docker run -d --network my-network -p 8089:8089 --name backend_ctr hammamrabet/mohamed_mrabet_5arctic4_g2:$BUILD_NUMBER' */
             }
         }
+
         stage('Deploy Application') {
-    steps {
+        steps {
         script {
             dir('kaddem') {
             // Update Docker Compose environment variables
@@ -144,7 +145,11 @@ pipeline {
         }
     }
 }
+        
     }
+
  }
+ 
+
 
 
