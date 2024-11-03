@@ -8,7 +8,7 @@ WORKDIR /usr/share/nginx/html
 RUN rm -rf ./*
 
 # Copy the Angular build artifacts from the local machine to the Nginx server
-COPY dist/khaddem-front/ ./
+COPY /src/dist/khaddem-front/ ./
 
 # Copy the custom Nginx configuration file to the appropriate location
 COPY default.conf /etc/nginx/conf.d/default.conf
