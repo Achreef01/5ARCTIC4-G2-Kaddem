@@ -12,6 +12,7 @@ import java.util.Set;
 
 @RestController
 @AllArgsConstructor
+@CrossOrigin(origins = "*")
 @RequestMapping("/universite")
 public class UniversiteRestController {
 	@Autowired
