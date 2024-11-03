@@ -6,7 +6,7 @@ services:
     networks:
       - my-network
     environment:
-      - SPRING_DATASOURCE_URL=jdbc:mysql://db:3306/kaddem?createDatabaseIfNotExist=true&userSSL=false
+      - SPRING_DATASOURCE_URL=jdbc:mysql://db:3306/kaddem?createDatabaseIfNotExist=true&useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC
       - SPRING_DATASOURCE_USERNAME=root
       - SPRING_DATASOURCE_PASSWORD=
     depends_on:
@@ -26,8 +26,9 @@ services:
   db:
     image: mysql:5.7
     environment:
+      MYSQL_ROOT_PASSWORD: ""  # Make sure this is set to an empty string
       MYSQL_DATABASE: kaddem
-      MYSQL_ALLOW_EMPTY_PASSWORD: 'yes'
+      MYSQL_ALLOW_EMPTY_PASSWORD: 'yes'  # Allow empty password
     ports:
       - "3306:3306"
     networks:
