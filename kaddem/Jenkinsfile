@@ -30,13 +30,13 @@ pipeline {
             }
         }
 
-    //    stage('MVN TEST') {
-    //        steps {
-    //            dir('kaddem') {
-    //                sh 'mvn clean test'
-    //            }
-    //        }
-    //    }
+        stage('MVN TEST') {
+            steps {
+                dir('kaddem') {
+                    sh 'mvn clean test'
+                }
+            }
+        }
 
         stage('MVN BUILD') {
             steps {
@@ -46,9 +46,20 @@ pipeline {
             }
         }
 
-        
+        stage('JaCoCo') {
+            steps {
+                dir('kaddem') {
+                    step([$class: 'JacocoPublisher',
+                        execPattern: '**/target/*.exec',               // Use wildcard for exec files
+                        classPattern: '**/classes',                    // Use wildcard for classes
+                        sourcePattern: '**/src',                       // Use wildcard for source files
+                        exclusionPattern: '**/target/**,**/*Test,**/_javassist/**'  // Wildcards in exclusion pattern
+                    ])
+                }
+            }
+        }
 
-    /*    stage('Sonarqube analysis') {
+        stage('Sonarqube analysis') {
             steps {
                 dir('kaddem') {
                     withSonarQubeEnv('sonarqube'){
@@ -65,7 +76,7 @@ pipeline {
                 }
             }
         }
-*/
+
         stage('Build backend docker image') {
             steps {
                 dir('kaddem') {
