@@ -10,7 +10,7 @@ COPY package*.json ./
 RUN npm install -g @angular/cli@15.2.10
 
 RUN npm cache clean --force
-
+RUN npm init --force
 # Install project dependencies
 RUN npm install --force
 
