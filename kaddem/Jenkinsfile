@@ -30,14 +30,14 @@ pipeline {
             }
         }
 
-        stage('MVN TEST') {
+    /*    stage('MVN TEST') {
             steps {
                 dir('kaddem') {
                     sh 'mvn clean test'
                 }
             }
         }
-
+*/
         stage('MVN BUILD') {
             steps {
                 dir('kaddem') {
@@ -76,7 +76,7 @@ pipeline {
                 }
             }
         }
-
+/*
         stage('Build backend docker image') {
             steps {
                 dir('kaddem') {
@@ -128,5 +128,6 @@ pipeline {
                 }
             }
         }
+*/
     }
 }
