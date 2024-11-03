@@ -107,7 +107,7 @@ pipeline {
         stage('Handle containers and network ') {
             steps {
                 // Create Docker network
-                sh 'docker network create my-network || true'
+                sh 'docker network rm my-network'
 
                 // Stop and remove old containers
                 sh 'docker stop mysql_db || true'
@@ -119,13 +119,13 @@ pipeline {
 }}
 /*
                 // Start MySQL container
-                sh 'docker run -d --network my-network -p 3306:3306 --name mysql_db -e MYSQL_ROOT_PASSWORD=$MYSQL_CREDENTIALS_PSW mysql:latest'
+               // sh 'docker run -d --network my-network -p 3306:3306 --name mysql_db -e MYSQL_ROOT_PASSWORD=$MYSQL_CREDENTIALS_PSW mysql:latest'
 
                 // Start Backend container
-                sh 'docker run -d --network my-network -p 8089:8089 --name backend_ctr amanibensassi/amanibensassi_5arctic4_g2:$BUILD_NUMBER'
+               // sh 'docker run -d --network my-network -p 8089:8089 --name backend_ctr amanibensassi/amanibensassi_5arctic4_g2:$BUILD_NUMBER'
 
                 // Start Backend container
-                sh 'docker run -d --network my-network -p 8089:8089 --name frontend_ctr amanibensassi/amanibensassi_5arctic4_g2_front:$BUILD_NUMBER'
+              //  sh 'docker run -d --network my-network -p 8089:8089 --name frontend_ctr amanibensassi/amanibensassi_5arctic4_g2_front:$BUILD_NUMBER'
             }
         }
     }*/
