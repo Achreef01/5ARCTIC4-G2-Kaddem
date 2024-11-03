@@ -10,18 +10,10 @@ services:
       - SPRING_DATASOURCE_USERNAME=root
       - SPRING_DATASOURCE_PASSWORD=1234
     depends_on:
-      - db
+      db:
+        condition: service_healthy
     ports:
       - "8089:8089"
-
-  frontend:
-    image: takwa2/kaddem-frontend:latest
-    depends_on:
-      - backend
-    networks:
-      - my-network
-    ports:
-      - "80:80"
 
   db:
     image: mysql:5.7
@@ -35,6 +27,11 @@ services:
       - my-network
     volumes:
       - db_data:/var/lib/mysql
+    healthcheck:
+      test: [ "CMD", "mysqladmin", "ping", "-h", "localhost" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
 volumes:
   db_data:
