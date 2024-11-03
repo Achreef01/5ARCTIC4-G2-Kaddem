@@ -113,6 +113,7 @@ pipeline {
                         sh 'docker stop mysql_db || true && docker rm mysql_db || true'
                         sh 'docker-compose down'
                         sh 'docker-compose up -d'
+                    }
                 }
             }
         }
