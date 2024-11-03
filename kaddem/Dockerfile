@@ -2,9 +2,9 @@
 FROM openjdk:8-jre-alpine
 
 # Set environment variables for Nexus details
-ENV NEXUS_URL=http://192.168.56.4:8081
-ENV ARTIFACT_PATH=tn/esprit/spring/kaddem/maven-metadata.xml
-ENV VERSION=0.0.1-SNAPSHOT
+ARG NEXUS_URL
+ARG ARTIFACT_PATH
+ARG VERSION
 
 # Install necessary packages and download the .jar file from Nexus
 RUN apk add --no-cache curl wget \
