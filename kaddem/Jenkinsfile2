@@ -66,6 +66,14 @@ pipeline {
             }
         }
 
+        stage('Junit+Mock') {
+            steps {
+                dir('kaddem') {
+                    sh 'mvn test'
+                }
+            }
+        }
+
         stage('Compile') {
             steps {
                 dir('kaddem') {
@@ -99,7 +107,7 @@ pipeline {
 
         stage('Build Backend Docker Image') {
             steps {
-                dir('kaddem') {
+                dir('Kaddem-front') {
                     sh 'docker build -t kaddem-frontend .'
                     
                     sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
