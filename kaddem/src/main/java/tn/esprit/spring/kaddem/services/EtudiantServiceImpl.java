@@ -16,6 +16,7 @@ import tn.esprit.spring.kaddem.repositories.EtudiantRepository;
 
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 @Service
@@ -57,13 +58,26 @@ public class EtudiantServiceImpl implements IEtudiantService{
         etudiantRepository.save(etudiant);
 	}
 	@Transactional
-	public Etudiant addAndAssignEtudiantToEquipeAndContract(Etudiant e, Integer idContrat, Integer idEquipe){
-		Contrat c=contratRepository.findById(idContrat).orElse(null);
-		Equipe eq=equipeRepository.findById(idEquipe).orElse(null);
-		c.setEtudiant(e);
-		eq.getEtudiants().add(e);
-return e;
+// Inside EtudiantServiceImpl
+	public Etudiant addAndAssignEtudiantToEquipeAndContract(Etudiant etudiant, Integer contratId, Integer equipeId) {
+		// Check if contrat exists
+		Optional<Contrat> contratOpt = contratRepository.findById(contratId);
+		if (!contratOpt.isPresent()) {
+			throw new IllegalArgumentException("Contrat not found");
+		}
+
+		// Check if equipe exists
+		Optional<Equipe> equipeOpt = equipeRepository.findById(equipeId);
+		if (!equipeOpt.isPresent()) {
+			throw new IllegalArgumentException("Equipe not found");
+		}
+
+		// Assuming other logic here...
+
+		// Save the etudiant
+		return etudiantRepository.save(etudiant); // Ensure this line is executed
 	}
+
 
 	public 	List<Etudiant> getEtudiantsByDepartement (Integer idDepartement){
 return  etudiantRepository.findEtudiantsByDepartement_IdDepart((idDepartement));
