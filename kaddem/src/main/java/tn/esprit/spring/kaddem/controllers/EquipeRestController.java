@@ -12,7 +12,7 @@ import java.util.List;
 @RestController
 @AllArgsConstructor
 @RequestMapping("/equipe")
-@CrossOrigin(origins = "*", maxAge = 3600, allowCredentials = "true")
+@CrossOrigin(origins = "http://192.168.33.10:4200", maxAge = 3600, allowCredentials = "true")
 public class EquipeRestController {
 	IEquipeService equipeService;
 	// http://localhost:8089/Kaddem/equipe/retrieve-all-equipes
