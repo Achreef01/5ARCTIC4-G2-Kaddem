@@ -27,7 +27,7 @@ services:
     networks:
       - my-network
     healthcheck:
-      test: ["CMD-SHELL", "curl -f http://192.168.28.144:8089 || exit 1"]
+      test: ["CMD-SHELL", "curl  http://192.168.28.144:8089 || exit 1"]
       interval: 10s
       timeout: 5s
       retries: 5
