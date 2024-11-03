@@ -12,9 +12,9 @@ services:
       - my-network
     healthcheck:
       test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
+      interval: 20s
+      timeout: 10s
+      retries: 10
 
   backend_ctr:
     image: achrefochi01/kaddem-achrefochi-5arctic4:${BUILD_NUMBER}
