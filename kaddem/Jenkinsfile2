@@ -131,7 +131,7 @@ pipeline {
             }
         }
 
-        stage('Deploy Application') {
+        stage('Deploy Application Docker Compose ') {
         steps {
         script {
             dir('kaddem') {
