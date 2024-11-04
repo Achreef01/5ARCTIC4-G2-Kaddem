@@ -1,17 +1,19 @@
+# Specify the base image
 FROM openjdk:8-jre-alpine
 
-# Set environment variables
-ARG NEXUS_URL
-ARG ARTIFACT_PATH
+# Define build arguments
+ARG NEXUS_URL=http://192.168.56.4:8081
+ARG ARTIFACT_PATH=tn/esprit/spring/kaddem/maven-metadata.xml
 ARG VERSION=0.0.1-SNAPSHOT
 
-# Install curl and wget, create the app directory, and download the jar file
+# Install necessary packages and download the jar
 RUN apk add --no-cache curl wget \
     && mkdir -p /app \
     && SNAPSHOT_VERSION=$(curl -s "${NEXUS_URL}/repository/maven-snapshots/${ARTIFACT_PATH}" | grep -o "<version>[^<]*" | sed 's/<version>//') \
-    && wget ${NEXUS_URL}/repository/maven-snapshots/tn/esprit/spring/kaddem/${SNAPSHOT_VERSION}/kaddem-${SNAPSHOT_VERSION}.jar -O /app/kaddem.jar
+    && wget "${NEXUS_URL}/repository/maven-snapshots/tn/esprit/spring/kaddem/${SNAPSHOT_VERSION}/kaddem-${SNAPSHOT_VERSION}.jar" -O /app/kaddem.jar
 
 # Set the working directory
 WORKDIR /app
-    # Set the entry point to run the jar
-ENTRYPOINT ["java", "-jar", "/app/kaddem.jar"]
+
+# Command to run the jar file
+CMD ["java", "-jar", "kaddem.jar"]
