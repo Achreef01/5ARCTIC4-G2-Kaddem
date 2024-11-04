@@ -2,9 +2,4 @@ management:
   endpoints:
     web:
       exposure:
-        include: prometheus
-  endpoint:
-    prometheus:
-      enabled: true
-server:
-  port: 8089 # Set this to your application's port if different
+        include: [ "prometheus" ]
