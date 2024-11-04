@@ -11,7 +11,9 @@ RUN apk add --no-cache curl wget \
     && mkdir -p /app \
     && SNAPSHOT_VERSION=$(curl -s "${NEXUS_URL}/repository/maven-snapshots/${ARTIFACT_PATH}" | grep -o "<version>[^<]*" | sed 's/<version>//') \
     && echo "Found SNAPSHOT_VERSION: ${SNAPSHOT_VERSION}" \
-    && wget "${NEXUS_URL}/repository/maven-snapshots/tn/esprit/spring/kaddem/${SNAPSHOT_VERSION}/kaddem-${SNAPSHOT_VERSION}.jar" -O /app/kaddem.jar
+    && ARTIFACT_URL="${NEXUS_URL}/repository/maven-snapshots/tn/esprit/spring/kaddem/${SNAPSHOT_VERSION}/kaddem-${SNAPSHOT_VERSION}.jar" \
+    && echo "Attempting to download from: ${ARTIFACT_URL}" \
+    && wget "${ARTIFACT_URL}" -O /app/kaddem.jar || { echo "Failed to download JAR"; exit 1; }
 
 # Set the working directory
 WORKDIR /app
