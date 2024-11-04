@@ -9,7 +9,7 @@ pipeline {
         
         NEXUS_VERSION = 'nexus3'
         NEXUS_PROTOCOL = 'http'
-        NEXUS_URL = '192.168.100.207:8081' // Nexus server base URL
+        NEXUS_URL = '192.168.8.151:8081' // Nexus server base URL
         NEXUS_REPOSITORY = 'Kaddem-nexus'  // Nexus repository name
         CREDENTIALS_ID = 'nexus-cred'      // Jenkins credentials ID for Nexus
         GROUP_ID = 'tn.esprit.spring'  // Group ID for the artifact
@@ -90,7 +90,7 @@ pipeline {
         stage('Build Backend Docker Image') {
             steps {
                 dir('kaddem') {
-                    sh 'docker build --build-arg NEXUS_URL="192.168.100.207:8081" --build-arg ARTIFACT_PATH="tn/esprit/spring/kaddem" --build-arg VERSION="0.0.1-SNAPSHOT" -t kaddem-backend .'
+                    sh 'docker build --build-arg NEXUS_URL="192.168.8.151:8081" --build-arg ARTIFACT_PATH="tn/esprit/spring/kaddem" --build-arg VERSION="0.0.1-SNAPSHOT" -t kaddem-backend .'
                     sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
                     sh 'docker tag kaddem-backend amanibensassi/amanibensassi_5arctic4_g2:$BUILD_NUMBER'
                     sh 'docker push amanibensassi/amanibensassi_5arctic4_g2:$BUILD_NUMBER'
