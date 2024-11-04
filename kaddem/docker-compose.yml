@@ -17,7 +17,7 @@ services:
       retries: 10
 
   backend:
-    image: seifeddineabidi/kaddem-1.0
+    image: seifeddineabidi/kaddem-1.0:${BUILD_NUMBER}
     container_name: backend
     depends_on:
       mysql_db:
