@@ -46,7 +46,7 @@ public class ContratRestController {
 		return contratService.updateContrat(c);
 	}
 
-	
+
 
 	@PutMapping(value = "/assignContratToEtudiant/{idContrat}/{nomE}/{prenomE}")
 	public Contrat assignContratToEtudiant (Integer idContrat, String nomE, String prenomE){
