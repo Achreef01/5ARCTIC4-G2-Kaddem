@@ -73,6 +73,7 @@ pipeline {
                 }
             }
         }
+<<<<<<< HEAD
         stage('JaCoCo ') {
             steps {
                 dir('kaddem') {
@@ -85,6 +86,9 @@ pipeline {
                 }
             }
         }
+=======
+        
+>>>>>>> ae8668b66874907e4f0b5d45812c5173dcf853d4
 
        stage('Compile') {
             steps {
