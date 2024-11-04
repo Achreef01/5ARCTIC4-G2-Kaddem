@@ -23,4 +23,4 @@ RUN apk add --no-cache curl wget \
 WORKDIR ${APP_HOME}
 
 # Command to run the jar file
-CMD ["sh", "-c", "java -jar $APP_HOME/$JAR_FILE"]
+CMD ["sh", "-c", "java -jar $APP_HOME/kaddem-0.0.1.jar"]
