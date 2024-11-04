@@ -18,7 +18,7 @@ services:
 
   backend:
     image: seifeddineabidi/kaddem-1.0
-    container_name: backend_ctr
+    container_name: backend
     depends_on:
       mysql_db:
         condition: service_healthy
