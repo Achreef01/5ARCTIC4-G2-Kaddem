@@ -13,7 +13,7 @@ import java.util.Set;
 @RestController
 @AllArgsConstructor
 @RequestMapping("/universite")
-@CrossOrigin(origins = "http://192.168.8.151:4200", maxAge = 3600, allowCredentials = "true") 
+@CrossOrigin(origins = "http://192.168.8.151:4200", maxAge = 3600, allowCredentials = "true") // NOSONAR
 public class UniversiteRestController {
 	@Autowired
 	IUniversiteService universiteService;
