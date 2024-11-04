@@ -41,8 +41,7 @@ public class ContratRestController {
 
 	@PutMapping("/update-contrat")
 	public Contrat updateContrat(@RequestBody Contrat c) {
-		//Contrat contrat= contratService.updateContrat(c);
-		//return contrat;
+
 		return contratService.updateContrat(c);
 	}
 
@@ -50,7 +49,6 @@ public class ContratRestController {
 
 	@PutMapping(value = "/assignContratToEtudiant/{idContrat}/{nomE}/{prenomE}")
 	public Contrat assignContratToEtudiant (Integer idContrat, String nomE, String prenomE){
-	//	Contrat c= contratService.affectContratToEtudiant()
 		return 	(contratService.affectContratToEtudiant(idContrat, nomE, prenomE));
 	}
 
