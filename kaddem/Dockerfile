@@ -18,9 +18,8 @@ RUN apk add --no-cache curl wget \
     && wget "${ARTIFACT_URL}" -O ${APP_HOME}/${JAR_FILE} \
     || { echo "Failed to download JAR from ${ARTIFACT_URL}"; exit 1; }
 
-
 # Set the working directory
 WORKDIR ${APP_HOME}
 
-# Command to run the jar file
-CMD ["java", "-jar", "${JAR_FILE}"]
+# Command to run the jar file, using shell form to expand environment variables
+CMD java -jar ${JAR_FILE}
