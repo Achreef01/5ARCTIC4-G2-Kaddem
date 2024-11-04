@@ -73,14 +73,27 @@ pipeline {
                 }
             }
         }
+        stage('JaCoCo ') {
+            steps {
+                dir('kaddem') {
+                    step([$class: 'JacocoPublisher',
+                          execPattern: '**/target/jacoco.exec',
+                          classPattern: '**/classes',
+                          sourcePattern: '**/src',
+                          exclusionPattern: '*/target/**/,**/*Test*,**/*_javassist/**'
+                    ])
+                }
+            }
+        }
 
-        stage('Compile') {
+       stage('Compile') {
             steps {
                 dir('kaddem') {
                     sh 'mvn clean compile'
                 }
             }
         }
+        
 
        stage('SonnarQube') {
             steps {
@@ -105,7 +118,7 @@ pipeline {
             }
         }
 
-        stage('Build Frontend Docker Image') {
+       /* stage('Build Frontend Docker Image') {
             steps {
                 dir('Kaddem-front') {
                     sh 'docker build -t kaddem-frontend .'
@@ -116,6 +129,7 @@ pipeline {
                 }
             }
         }
+        */
 
 
         stage('Stop Old Containers') {
@@ -130,8 +144,9 @@ pipeline {
                 sh 'docker run -d --network my-network -p 8089:8089 --name backend_ctr hammamrabet/mohamed_mrabet_5arctic4_g2:$BUILD_NUMBER' */
             }
         }
+    
 
-        stage('Deploy Application Docker Compose ') {
+     /* stage('Deploy Application Docker Compose ') {
         steps {
         script {
             dir('kaddem') {
@@ -145,6 +160,7 @@ pipeline {
         }
     }
 }
+*/
         
     }
 
