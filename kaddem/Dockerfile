@@ -23,4 +23,4 @@ RUN apk add --no-cache curl wget \
 WORKDIR ${APP_HOME}
 
 # Command to run the jar file
-CMD ["java", "-jar", "${APP_HOME}/${JAR_FILE}"]
+CMD ["sh", "-c", "java -jar $APP_HOME/$JAR_FILE"]
