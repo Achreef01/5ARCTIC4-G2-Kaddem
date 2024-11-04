@@ -4,19 +4,22 @@ FROM openjdk:8-jre-alpine
 # Define build arguments
 ARG NEXUS_URL=http://192.168.56.4:8081
 ARG ARTIFACT_PATH=tn/esprit/spring/kaddem/maven-metadata.xml
-ARG VERSION=0.0.1-SNAPSHOT
+ARG VERSION=0.0.1
+
+# Set environment variables for the application
+ENV APP_HOME=/app
+ENV JAR_FILE=kaddem-${VERSION}.jar
 
 # Install necessary packages and download the jar
 RUN apk add --no-cache curl wget \
-    && mkdir -p /app \
-    && SNAPSHOT_VERSION=$(curl -s "${NEXUS_URL}/repository/maven-public/${ARTIFACT_PATH}" | grep -o "<version>[^<]*" | sed 's/<version>//') \
-    && echo "Found SNAPSHOT_VERSION: ${SNAPSHOT_VERSION}" \
-    && ARTIFACT_URL="${NEXUS_URL}/repository/maven-public/tn/esprit/spring/kaddem/${SNAPSHOT_VERSION}/kaddem-${SNAPSHOT_VERSION}.jar" \
+    && mkdir -p ${APP_HOME} \
+    && ARTIFACT_URL="${NEXUS_URL}/repository/maven-releases/${ARTIFACT_PATH}" \
     && echo "Attempting to download from: ${ARTIFACT_URL}" \
-    && wget "${ARTIFACT_URL}" -O /app/kaddem.jar || { echo "Failed to download JAR"; exit 1; }
+    && wget "${ARTIFACT_URL}" -O ${APP_HOME}/${JAR_FILE} \
+    || { echo "Failed to download JAR from ${ARTIFACT_URL}"; exit 1; }
 
 # Set the working directory
-WORKDIR /app
+WORKDIR ${APP_HOME}
 
 # Command to run the jar file
-CMD ["java", "-jar", "kaddem.jar"]
+CMD ["java", "-jar", "${JAR_FILE}"]

@@ -104,9 +104,14 @@
     <distributionManagement>
         <repository>
             <id>deploymentRepo</id>
-            <url>http://192.168.56.4:8081/repository/maven-public/</url>
+            <url>http://192.168.56.4:8081/repository/maven-releases/</url>
         </repository>
+        <snapshotRepository>
+            <id>deploymentSnapshotRepo</id>
+            <url>http://192.168.56.4:8081/repository/maven-snapshots/</url>
+        </snapshotRepository>
     </distributionManagement>
+
 
 
 </project>
