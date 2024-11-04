@@ -1,17 +1,34 @@
-# Use the official Nginx image
-FROM nginx:1.23
+FROM node:18 AS build
 
-# Set the working directory in the container
-WORKDIR /usr/share/nginx/html
+# Set the working directory inside the container
+WORKDIR /app
 
-# Remove any existing files in the working directory
-RUN rm -rf ./*
+# Copy package.json and package-lock.json to the container
+COPY package*.json ./
 
-# Copy the Angular build artifacts from the local machine to the Nginx server
-COPY dist/khaddem-front/ ./
+# Install Angular CLI globally (if not already installed)
+RUN npm install -g @angular/cli@16.2.6
 
-# Copy the custom Nginx configuration file to the appropriate location
+RUN npm cache clean --force
+RUN npm init --force
+# Install project dependencies
+RUN npm install --force
+
+# Copy the entire project to the container
+COPY . .
+
+# Build the Angular application for production
+RUN ng build 
+
+# Use a lightweight Nginx image to serve the Angular app
+FROM nginx:latest
+
 COPY default.conf /etc/nginx/conf.d/default.conf
+# Copy the built Angular app from the previous stage to Nginx's web root directory
+COPY --from=build /app/dist/KhaddemFront /usr/share/nginx/html
 
-# Expose port 80 for the Nginx server
+# Expose port 80
 EXPOSE 80
+
+# Command to start Nginx and serve the Angular app
+CMD ["nginx", "-g", "daemon off;"]
