@@ -16,6 +16,7 @@ RUN apk add --no-cache curl wget \
     && ARTIFACT_URL="${NEXUS_URL}/repository/maven-releases/${ARTIFACT_PATH}" \
     && echo "Attempting to download from: ${ARTIFACT_URL}" \
     && wget "${ARTIFACT_URL}" -O ${APP_HOME}/${JAR_FILE} \
+    && ls -l ${APP_HOME} \
     || { echo "Failed to download JAR from ${ARTIFACT_URL}"; exit 1; }
 
 # Set the working directory
