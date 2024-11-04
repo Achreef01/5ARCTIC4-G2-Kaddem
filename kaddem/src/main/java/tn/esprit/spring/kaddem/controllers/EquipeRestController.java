@@ -8,10 +8,11 @@ import tn.esprit.spring.kaddem.entities.Equipe;
 import tn.esprit.spring.kaddem.services.IEquipeService;
 
 import java.util.List;
-@CrossOrigin(origins = "*")
+
 @RestController
 @AllArgsConstructor
 @RequestMapping("/equipe")
+@CrossOrigin(origins = "http://192.168.8.151:4200", maxAge = 3600, allowCredentials = "true") 
 public class EquipeRestController {
 	IEquipeService equipeService;
 	// http://localhost:8089/Kaddem/equipe/retrieve-all-equipes
