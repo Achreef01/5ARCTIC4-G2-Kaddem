@@ -103,12 +103,19 @@ pipeline {
                 }
             }
         }
-
-        stage('Handle containers and network ') {
+        stage('Build Frontend Docker Image') {
             steps {
-                // Create Docker network
-                sh 'docker network rm my-network'
+                dir('kaddemfront') {
+                    sh 'docker build -t kaddem-frontend .'
+                    sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
+                    sh 'docker tag kaddem-frontend amanibensassi/amanibensassi_5arctic4_g2_front:$BUILD_NUMBER'
+                    sh 'docker push amanibensassi/amanibensassi_5arctic4_g2_front:$BUILD_NUMBER'
+                }
+            }
+        }
 
+        stage('Stop old containers ') {
+            steps {
                 // Stop and remove old containers
                 sh 'docker stop mysql_db || true'
                 sh 'docker rm mysql_db || true'
