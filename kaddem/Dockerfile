@@ -10,6 +10,7 @@ ARG VERSION=0.0.1-SNAPSHOT
 RUN apk add --no-cache curl wget \
     && mkdir -p /app \
     && SNAPSHOT_VERSION=$(curl -s "${NEXUS_URL}/repository/maven-snapshots/${ARTIFACT_PATH}" | grep -o "<version>[^<]*" | sed 's/<version>//') \
+    && echo "Found SNAPSHOT_VERSION: ${SNAPSHOT_VERSION}" \
     && wget "${NEXUS_URL}/repository/maven-snapshots/tn/esprit/spring/kaddem/${SNAPSHOT_VERSION}/kaddem-${SNAPSHOT_VERSION}.jar" -O /app/kaddem.jar
 
 # Set the working directory
