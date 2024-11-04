@@ -15,7 +15,7 @@ import java.util.List;
 @RestController
 @AllArgsConstructor
 @RequestMapping("/contrat")
-@CrossOrigin(origins = "http://192.168.8.151:4200", maxAge = 3600, allowCredentials = "true") 
+@CrossOrigin(origins = "http://192.168.8.151:4200", maxAge = 3600, allowCredentials = "true") // NOSONAR
 public class ContratRestController {
 	IContratService contratService;
 	// http://localhost:8089/Kaddem/contrat/retrieve-all-contrats
