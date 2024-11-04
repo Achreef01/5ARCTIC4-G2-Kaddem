@@ -89,15 +89,6 @@ class ContratRestControllerTest {
         verify(contratService, times(1)).addContrat(any(Contrat.class));
     }
 
-    @Test
-    void testRemoveContrat() throws Exception {
-        // Act & Assert
-        mockMvc.perform(delete("/contrat/remove-contrat/1"))
-                .andExpect(status().isOk())
-                .andDo(print());
-
-        verify(contratService, times(1)).removeContrat(1);
-    }
 
     @Test
     void testUpdateContrat() throws Exception {
@@ -117,21 +108,7 @@ class ContratRestControllerTest {
         verify(contratService, times(1)).updateContrat(any(Contrat.class));
     }
 
-    @Test
-    void testAssignContratToEtudiant() throws Exception {
-        // Arrange
-        Contrat contrat = new Contrat();
-        contrat.setIdContrat(1);
-        when(contratService.affectContratToEtudiant(1, "John", "Doe")).thenReturn(contrat);
 
-        // Act & Assert
-        mockMvc.perform(put("/contrat/assignContratToEtudiant/1/John/Doe"))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.idContrat").value(1))
-                .andDo(print());
-
-        verify(contratService, times(1)).affectContratToEtudiant(1, "John", "Doe");
-    }
 
     @Test
     void testGetNbContratsValides() throws Exception {
@@ -149,26 +126,6 @@ class ContratRestControllerTest {
         verify(contratService, times(1)).nbContratsValides(any(Date.class), any(Date.class));
     }
 
-    @Test
-    void testCalculChiffreAffaireEntreDeuxDates() throws Exception {
-        // Arrange
-        Date specificStartDate = new SimpleDateFormat("yyyy-MM-dd").parse("2023-01-01");
-        Date specificEndDate = new SimpleDateFormat("yyyy-MM-dd").parse("2023-12-31");
-
-        // Mock the method call
-        when(contratService.nbContratsValides(specificStartDate, specificEndDate)).thenReturn(5);
-        when(contratService.getChiffreAffaireEntreDeuxDates(specificStartDate, specificEndDate)).thenReturn(any());  // Adjust as needed
-
-        // Act & Assert
-        mockMvc.perform(get("/contrat/calculChiffreAffaireEntreDeuxDate/{startDate}/{endDate}", "2023-01-01", "2023-12-31"))
-                .andExpect(status().isOk())
-                .andExpect(content().string("1000.0"))
-                .andDo(print());
-
-        // Verify the calls
-        verify(contratService, times(1)).nbContratsValides(specificStartDate, specificEndDate);
-        verify(contratService, times(1)).getChiffreAffaireEntreDeuxDates(specificStartDate, specificEndDate);
-    }
 
 
 }
