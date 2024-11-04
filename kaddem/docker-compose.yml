@@ -36,7 +36,7 @@ services:
     image: seifeddineabidi/seifeddineabidi_5arctic4_g2_front:${BUILD_NUMBER}
     container_name: frontend
     depends_on:
-      backend_ctr:
+      backend:
         condition: service_healthy
     ports:
       - "4200:80"
