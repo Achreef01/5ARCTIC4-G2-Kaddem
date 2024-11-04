@@ -12,11 +12,7 @@ import tn.esprit.spring.kaddem.entities.Specialite;
 import tn.esprit.spring.kaddem.repositories.ContratRepository;
 import tn.esprit.spring.kaddem.repositories.EtudiantRepository;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -47,7 +43,7 @@ class ContratServiceImplTest {
         etudiant = new Etudiant();
         etudiant.setNomE("John");
         etudiant.setPrenomE("Doe");
-        etudiant.setContrats(Set.of(contrat));
+        etudiant.setContrats(Collections.singleton(contrat));
     }
 
     @Test
