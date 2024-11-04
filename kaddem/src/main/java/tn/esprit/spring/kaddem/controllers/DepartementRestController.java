@@ -6,10 +6,11 @@ import tn.esprit.spring.kaddem.entities.Departement;
 import tn.esprit.spring.kaddem.services.IDepartementService;
 
 import java.util.List;
-@CrossOrigin(origins = "*")
+
 @RestController
 @AllArgsConstructor
 @RequestMapping("/departement")
+@CrossOrigin(origins = "http://192.168.8.151:4200", maxAge = 3600, allowCredentials = "true") 
 public class DepartementRestController {
 	IDepartementService departementService;
 	// http://localhost:8089/Kaddem/departement/retrieve-all-departements
