@@ -54,7 +54,6 @@ public class ContratRestController {
 		return 	(contratService.affectContratToEtudiant(idContrat, nomE, prenomE));
 	}
 
-	//The most common ISO Date Format yyyy-MM-dd — for example, "2000-10-31".
 		@GetMapping(value = "/getnbContratsValides/{startDate}/{endDate}")
 		public Integer getnbContratsValides(@PathVariable(name = "startDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date startDate,
 										  @PathVariable(name = "endDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date endDate) {
@@ -62,11 +61,9 @@ public class ContratRestController {
 			return contratService.nbContratsValides(startDate, endDate);
 		}
 
-    //Only no-arg methods may be annotated with @Scheduled
     @Scheduled(cron="0 0 13 * * *")//(cron="0 0 13 * * ?")(fixedRate =21600)
 	@PutMapping(value = "/majStatusContrat")
 	public void majStatusContrat (){
-		//return 	(contratService.affectContratToEtudiant(ce, nomE, prenomE));
 		contratService.retrieveAndUpdateStatusContrat();
 
 	}
