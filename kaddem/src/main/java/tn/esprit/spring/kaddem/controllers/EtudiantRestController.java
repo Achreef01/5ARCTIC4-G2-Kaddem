@@ -7,10 +7,11 @@ import tn.esprit.spring.kaddem.entities.Etudiant;
 import tn.esprit.spring.kaddem.services.IEtudiantService;
 
 import java.util.List;
-@CrossOrigin(origins = "*")
+
 @RestController
 @AllArgsConstructor
 @RequestMapping("/etudiant")
+@CrossOrigin(origins = "http://192.168.8.151:4200", maxAge = 3600, allowCredentials = "true") 
 public class EtudiantRestController {
 	@Autowired
 	IEtudiantService etudiantService;
