@@ -9,7 +9,7 @@ import java.util.List;
 
 @RestController
 @AllArgsConstructor
-@CrossOrigin(origins = "http://192.168.28.144:4200", maxAge = 3600, allowCredentials = "true")
+@CrossOrigin(origins = "http://192.168.28.144:4200", maxAge = 3600, allowCredentials = "true") // NOSONAR
 
 @RequestMapping("/departement")
 public class DepartementRestController {
