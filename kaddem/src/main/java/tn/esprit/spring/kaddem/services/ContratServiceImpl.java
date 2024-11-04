@@ -16,7 +16,7 @@ import java.util.Set;
 @Service
 public class ContratServiceImpl implements IContratService{
 @Autowired
-ContratRepository contratRepository;
+private ContratRepository contratRepository;
 @Autowired
 	EtudiantRepository etudiantRepository;
 	public List<Contrat> retrieveAllContrats(){
