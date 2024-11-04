@@ -9,9 +9,9 @@ ARG VERSION=0.0.1-SNAPSHOT
 # Install necessary packages and download the jar
 RUN apk add --no-cache curl wget \
     && mkdir -p /app \
-    && SNAPSHOT_VERSION=$(curl -s "${NEXUS_URL}/repository/maven-snapshots/${ARTIFACT_PATH}" | grep -o "<version>[^<]*" | sed 's/<version>//') \
+    && SNAPSHOT_VERSION=$(curl -s "${NEXUS_URL}/repository/maven-public/${ARTIFACT_PATH}" | grep -o "<version>[^<]*" | sed 's/<version>//') \
     && echo "Found SNAPSHOT_VERSION: ${SNAPSHOT_VERSION}" \
-    && ARTIFACT_URL="${NEXUS_URL}/repository/maven-snapshots/tn/esprit/spring/kaddem/${SNAPSHOT_VERSION}/kaddem-${SNAPSHOT_VERSION}.jar" \
+    && ARTIFACT_URL="${NEXUS_URL}/repository/maven-public/tn/esprit/spring/kaddem/${SNAPSHOT_VERSION}/kaddem-${SNAPSHOT_VERSION}.jar" \
     && echo "Attempting to download from: ${ARTIFACT_URL}" \
     && wget "${ARTIFACT_URL}" -O /app/kaddem.jar || { echo "Failed to download JAR"; exit 1; }
 
