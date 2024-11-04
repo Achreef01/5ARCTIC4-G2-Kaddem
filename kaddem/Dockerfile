@@ -13,7 +13,7 @@ ENV JAR_FILE=kaddem-${VERSION}.jar
 # Install necessary packages and download the jar
 RUN apk add --no-cache curl wget \
     && mkdir -p ${APP_HOME} \
-    && ARTIFACT_URL="${NEXUS_URL}/repository/maven-releases/${ARTIFACT_PATH}" \
+    && ARTIFACT_URL="${NEXUS_URL}/repository/maven-releases/tn/esprit/spring/kaddem/${VERSION}/${JAR_FILE}" \
     && echo "Attempting to download from: ${ARTIFACT_URL}" \
     && wget "${ARTIFACT_URL}" -O ${APP_HOME}/${JAR_FILE} \
     || { echo "Failed to download JAR from ${ARTIFACT_URL}"; exit 1; }
