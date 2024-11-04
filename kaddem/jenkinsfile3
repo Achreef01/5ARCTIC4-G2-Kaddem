@@ -27,6 +27,7 @@ pipeline {
             steps {
                 dir('kaddem') {
                     sh "mvn package -DskipTests=true"
+                    sh "mvn clean"
                 }
             }
         }
