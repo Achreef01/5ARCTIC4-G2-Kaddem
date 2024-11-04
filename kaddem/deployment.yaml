@@ -58,6 +58,10 @@ spec:
               value: root
             - name: SPRING_DATASOURCE_PASSWORD
               value: 1234
+        - name: front_ctr
+          image: hammamrabet/mohamed_mrabet_5arctic4_g2_front:31
+          ports:
+            - containerPort: 4200  # Adjust if necessary based on your frontend app's configuration
 
 ---
 
@@ -92,4 +96,18 @@ spec:
       port: 3306
       targetPort: 3306
       nodePort: 30002
+      # Frontend Service
+apiVersion: v1
+kind: Service
+metadata:
+  name: frontend-service
+spec:
+  selector:
+    app: kaddemback
+  type: NodePort
+  ports:
+    - protocol: TCP
+      port: 4200
+      targetPort: 80
+      nodePort: 30004  # You can specify a node port or let Kubernetes assign one automatically
 
