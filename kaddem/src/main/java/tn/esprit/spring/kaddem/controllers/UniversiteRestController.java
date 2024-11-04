@@ -16,26 +16,22 @@ import java.util.Set;
 public class UniversiteRestController {
 	@Autowired
 	IUniversiteService universiteService;
-	// http://localhost:8089/Kaddem/universite/retrieve-all-universites
 	@GetMapping("/retrieve-all-universites")
 	public List<Universite> getUniversites() {
 		List<Universite> listUniversites = universiteService.retrieveAllUniversites();
 		return listUniversites;
 	}
-	// http://localhost:8089/Kaddem/universite/retrieve-universite/8
 	@GetMapping("/retrieve-universite/{universite-id}")
 	public Universite retrieveUniversite(@PathVariable("universite-id") Integer universiteId) {
 		return universiteService.retrieveUniversite(universiteId);
 	}
 
-	// http://localhost:8089/Kaddem/universite/add-universite
 	@PostMapping("/add-universite")
 	public Universite addUniversite(@RequestBody Universite u) {
 		Universite universite = universiteService.addUniversite(u);
 		return universite;
 	}
 
-	// http://localhost:8089/Kaddem/universite/remove-universite/1
 	@DeleteMapping("/remove-universite/{universite-id}")
 	public void removeUniversite(@PathVariable("universite-id") Integer universiteId) {
 		universiteService.deleteUniversite(universiteId);
