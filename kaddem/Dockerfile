@@ -21,5 +21,5 @@ RUN apk add --no-cache curl wget \
 # Set the working directory
 WORKDIR ${APP_HOME}
 
-# Command to run the jar file, using shell form to expand environment variables
-CMD java -jar ${JAR_FILE}
+# Command to run the jar file with explicit path
+CMD ["sh", "-c", "java -jar /app/kaddem-${VERSION}.jar"]
