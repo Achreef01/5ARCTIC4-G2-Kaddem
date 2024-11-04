@@ -10,6 +10,7 @@ export class ContratService {
 
   private baseUrl = 'http://localhost:8089/kaddem/contrat'; // Update the base URL
 
+  
   constructor(private http: HttpClient) {}
 
   // Retrieve the list of all universities
