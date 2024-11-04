@@ -27,7 +27,7 @@ services:
     networks:
       - my-network
     environment:
-      - SPRING_DATASOURCE_URL=jdbc:mysql://mysql_db:3306/kaddem?createDatabaseIfNotExist=true&useSSL=false
+      - SPRING_DATASOURCE_URL=jdbc:mysql://mysql_db:3306/kaddemdb?createDatabaseIfNotExist=true&useSSL=false
       - SPRING_DATASOURCE_USERNAME=root
       - SPRING_DATASOURCE_PASSWORD=root
 
