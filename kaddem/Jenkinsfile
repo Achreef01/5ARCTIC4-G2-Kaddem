@@ -65,7 +65,7 @@ pipeline {
                 }
             }
         }
-
+*/
         stage('Build backend docker image') {
             steps {
                 dir('kaddem') {
@@ -73,7 +73,7 @@ pipeline {
                 }
             }
         }
-
+/*
         stage('Build frontend docker image') {
             steps {
                 dir('kaddemfront') {
@@ -81,7 +81,7 @@ pipeline {
                 }
             }
         }
-
+*/
         stage('Login') {
             steps {
                 dir('kaddem') {
@@ -98,7 +98,7 @@ pipeline {
             }
         }
 
-        stage('Push frontend docker image') {
+/*        stage('Push frontend docker image') {
             steps {
                 dir('kaddemfront') {
                     sh 'docker push takwa2/kaddem-frontend:latest'
