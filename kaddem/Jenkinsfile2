@@ -73,18 +73,7 @@ pipeline {
                 }
             }
         }
-        stage('JaCoCo ') {
-            steps {
-                dir('kaddem') {
-                    step([$class: 'JacocoPublisher',
-                          execPattern: '**/target/jacoco.exec',
-                          classPattern: '**/classes',
-                          sourcePattern: '**/src',
-                          exclusionPattern: '*/target/**/,**/*Test*,**/*_javassist/**'
-                    ])
-                }
-            }
-        }
+        
 
        stage('Compile') {
             steps {
