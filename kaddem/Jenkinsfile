@@ -46,9 +46,20 @@ pipeline {
             }
         }
 
+        stage('JaCoCo') {
+            steps {
+                dir('kaddem') {
+                    step([$class: 'JacocoPublisher',
+                        execPattern: '**/target/*.exec',               // Use wildcard for exec files
+                        classPattern: '**/classes',                    // Use wildcard for classes
+                        sourcePattern: '**/src',                       // Use wildcard for source files
+                        exclusionPattern: '**/target/**,**/*Test,**/_javassist/**'  // Wildcards in exclusion pattern
+                    ])
+                }
+            }
+        }
 
-
-    /*    stage('Sonarqube analysis') {
+        stage('Sonarqube analysis') {
             steps {
                 dir('kaddem') {
                     withSonarQubeEnv('sonarqube'){
@@ -65,7 +76,7 @@ pipeline {
                 }
             }
         }
-*/
+
         stage('Build backend docker image') {
             steps {
                 dir('kaddem') {
@@ -73,7 +84,7 @@ pipeline {
                 }
             }
         }
-/*
+
         stage('Build frontend docker image') {
             steps {
                 dir('kaddemfront') {
@@ -81,7 +92,7 @@ pipeline {
                 }
             }
         }
-*/
+
         stage('Login') {
             steps {
                 dir('kaddem') {
@@ -98,14 +109,14 @@ pipeline {
             }
         }
 
-/*        stage('Push frontend docker image') {
+        stage('Push frontend docker image') {
             steps {
                 dir('kaddemfront') {
                     sh 'docker push takwa2/kaddem-frontend:latest'
                 }
             }
         }
-*/
+
         stage("Docker Compose ") {
             steps {
                 dir('kaddem') {
