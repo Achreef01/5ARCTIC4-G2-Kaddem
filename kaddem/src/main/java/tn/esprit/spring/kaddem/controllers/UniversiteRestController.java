@@ -9,10 +9,11 @@ import tn.esprit.spring.kaddem.services.IUniversiteService;
 
 import java.util.List;
 import java.util.Set;
-@CrossOrigin(origins = "*")
+
 @RestController
 @AllArgsConstructor
 @RequestMapping("/universite")
+@CrossOrigin(origins = "http://192.168.8.151:4200", maxAge = 3600, allowCredentials = "true") // NOSONAR
 public class UniversiteRestController {
 	@Autowired
 	IUniversiteService universiteService;

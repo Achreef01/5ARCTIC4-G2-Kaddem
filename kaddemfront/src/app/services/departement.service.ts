@@ -8,7 +8,7 @@ import { Etudiant } from '../models/Etudiant';
   providedIn: 'root'
 })
 export class DepartementService {
-  private baseUrl = 'http://192.168.100.207:8089/kaddem/departement'; 
+  private baseUrl = 'http://192.168.8.151:8089/kaddem/departement'; 
 
   constructor(private http: HttpClient) { }
 
