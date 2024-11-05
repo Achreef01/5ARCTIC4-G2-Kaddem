@@ -1,0 +1,179 @@
+pipeline {
+    agent any
+    tools {
+        maven "M2_HOME"
+    }
+    environment {
+        DOCKERHUB_CREDENTIALS = credentials('dockerhub')
+        MYSQL_CREDENTIALS = credentials('mysql-credentials')
+        NVD_API_KEY = credentials('nvd-api')
+    }
+    stages {
+
+        stage('GIT') {
+            steps {
+                git branch: "AchrefOCHI-5ARCTIC4-G2",
+                    url: "https://github.com/Achreef01/5ARCTIC4-G2-Kaddem.git"
+            }
+        }
+
+        stage("Maven Build") {
+            steps {
+                dir('kaddem') {
+                    sh "mvn clean compile install -DskipTests=true"
+                }
+            }
+        }
+
+        stage('OWASP Dependency-Check Vulnerabilities') {
+            steps {
+                dir('kaddem') {
+                    dependencyCheck additionalArguments: "-o './' -s './' -f 'ALL' --prettyPrint --nvdApiKey '${NVD_API_KEY}'", odcInstallation: 'OWASP-Check'
+                    dependencyCheckPublisher pattern: 'dependency-check-report.xml'
+                }
+            }
+        }
+
+        stage('Tests - JUnit/Mockito') {
+            steps {
+                dir('kaddem') {
+                    sh 'mvn test'
+                }
+            }
+        }
+
+        stage('JaCoCo coverage report') {
+            steps {
+                dir('kaddem') {
+                    step([$class: 'JacocoPublisher',
+                          execPattern: '**/target/jacoco.exec',
+                          classPattern: '**/classes',
+                          sourcePattern: '**/src',
+                          exclusionPattern: '*/target/**/,**/*Test*,**/*_javassist/**'
+                    ])
+                }
+            }
+        }
+
+        stage('SonarQube Analysis') {
+            steps {
+                dir('kaddem'){
+                    withSonarQubeEnv('sonar') {
+                        sh 'mvn sonar:sonar'
+                    }
+                }
+            }
+        }
+
+        stage("Upload to Nexus") {
+            steps {
+                dir('kaddem') {
+                    script {
+                        def artifactId = 'kaddem'
+                        def version = '0.0.1-SNAPSHOT'
+                        def packaging = 'jar'
+
+                        nexusArtifactUploader(
+                            nexusVersion: 'nexus3',
+                            protocol: 'http',
+                            nexusUrl: '192.168.33.10:8081',
+                            groupId: 'tn.esprit.spring',
+                            artifactId: artifactId,
+                            version: version,
+                            repository: 'Kaddem-AchrefOCHI-5Arctic4',
+                            credentialsId: 'nexus-jenkins',
+                            artifacts: [
+                                [
+                                    artifactId: artifactId,
+                                    classifier: '',
+                                    file: "target/${artifactId}-${version}.${packaging}",
+                                    type: packaging
+                                ]
+                            ]
+                        )
+                    }
+                }
+            }
+        }
+
+        stage('Build Docker Image') {
+            steps {
+                dir('kaddem') {
+                    sh 'docker build --no-cache --build-arg NEXUS_URL="192.168.33.10:8081" --build-arg ARTIFACT_PATH="tn/esprit/spring/kaddem" --build-arg VERSION="0.0.1-SNAPSHOT" -t kaddem-backend .'
+                }
+            }
+        }
+
+        stage('Push Docker Image to Docker Hub') {
+            steps {
+                dir('kaddem') {
+                    sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
+                    sh 'docker tag kaddem-backend achrefochi01/kaddem-achrefochi-5arctic4:$BUILD_NUMBER'
+                    sh 'docker push achrefochi01/kaddem-achrefochi-5arctic4:$BUILD_NUMBER'
+                }
+            }
+        }
+
+        stage('Deploy Application') {
+            steps {
+                script {
+                    dir('kaddem') {
+
+                    withEnv(["MYSQL_ROOT_PASSWORD=${MYSQL_CREDENTIALS_PSW}", "BUILD_NUMBER=${env.BUILD_NUMBER}"]) {
+                        sh 'docker stop mysql_db || true && docker rm mysql_db || true'
+                        sh 'docker-compose down'
+                        sh 'docker-compose up -d'
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    post {
+        success {
+            script {
+                emailext(
+                    to: 'jobtopia594@gmail.com',
+                    subject: "🎉 Build Successful: ${env.JOB_NAME} #${env.BUILD_NUMBER}",
+                    body: """
+                    <html>
+                    <body>
+                        <h2 style="color: green;">Build Successful!</h2>
+                        <p>The build for <strong>${env.JOB_NAME}</strong> was successful!</p>
+                        <p><strong>Build Number:</strong> ${env.BUILD_NUMBER}</p>
+                        <p>You can view the details of this build at the following link:</p>
+                        <p><a href="${env.BUILD_URL}">${env.BUILD_URL}</a></p>
+                        <p>Thank you for using our CI/CD pipeline!</p>
+                    </body>
+                    </html>
+                    """,
+                    mimeType: 'text/html'
+                )
+            }
+        }
+        failure {
+            script {
+                emailext(
+                    to: 'jobtopia594@gmail.com',
+                    subject: "❌ Build Failed: ${env.JOB_NAME} #${env.BUILD_NUMBER}",
+                    body: """
+                    <html>
+                    <body>
+                        <h2 style="color: red;">Build Failed!</h2>
+                        <p>Unfortunately, the build for <strong>${env.JOB_NAME}</strong> has failed.</p>
+                        <p><strong>Build Number:</strong> ${env.BUILD_NUMBER}</p>
+                        <p>To troubleshoot the issue, please check the build logs at the following link:</p>
+                        <p><a href="${env.BUILD_URL}">${env.BUILD_URL}</a></p>
+                        <p>We appreciate your attention to this matter!</p>
+                    </body>
+                    </html>
+                    """,
+                    mimeType: 'text/html'
+                )
+            }
+        }
+    }
+}
+
+

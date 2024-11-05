@@ -38,9 +38,7 @@ class UniversiteServiceImplTest {
     @Autowired
     private UniversiteServiceImpl universiteServiceImpl;
 
-    /**
-     * Method under test: {@link UniversiteServiceImpl#retrieveAllUniversites()}
-     */
+
     @Test
     void testRetrieveAllUniversites() {
         // Arrange
@@ -56,9 +54,7 @@ class UniversiteServiceImplTest {
         assertSame(universiteList, actualRetrieveAllUniversitesResult);
     }
 
-    /**
-     * Method under test: {@link UniversiteServiceImpl#addUniversite(Universite)}
-     */
+
     @Test
     void testAddUniversite() {
         // Arrange
@@ -81,9 +77,7 @@ class UniversiteServiceImplTest {
         assertSame(universite, actualAddUniversiteResult);
     }
 
-    /**
-     * Method under test: {@link UniversiteServiceImpl#updateUniversite(Universite)}
-     */
+
     @Test
     void testUpdateUniversite() {
         // Arrange
@@ -106,9 +100,7 @@ class UniversiteServiceImplTest {
         assertSame(universite, actualUpdateUniversiteResult);
     }
 
-    /**
-     * Method under test: {@link UniversiteServiceImpl#retrieveUniversite(Integer)}
-     */
+
     @Test
     void testRetrieveUniversite() {
         // Arrange
@@ -127,9 +119,7 @@ class UniversiteServiceImplTest {
         assertSame(universite, actualRetrieveUniversiteResult);
     }
 
-    /**
-     * Method under test: {@link UniversiteServiceImpl#deleteUniversite(Integer)}
-     */
+
     @Test
     void testDeleteUniversite() {
         // Arrange
@@ -149,10 +139,7 @@ class UniversiteServiceImplTest {
         verify(universiteRepository).findById(eq(1));
     }
 
-    /**
-     * Method under test:
-     * {@link UniversiteServiceImpl#assignUniversiteToDepartement(Integer, Integer)}
-     */
+
     @Test
     void testAssignUniversiteToDepartement() {
         // Arrange
@@ -185,10 +172,7 @@ class UniversiteServiceImplTest {
         verify(universiteRepository).save(isA(Universite.class));
     }
 
-    /**
-     * Method under test:
-     * {@link UniversiteServiceImpl#retrieveDepartementsByUniversite(Integer)}
-     */
+
     @Test
     void testRetrieveDepartementsByUniversite() {
         // Arrange

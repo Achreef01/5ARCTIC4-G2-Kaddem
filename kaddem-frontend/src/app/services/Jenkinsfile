@@ -1,0 +1,71 @@
+pipeline {
+    agent { label 'slave01' } 
+     environment {
+        DOCKERHUB_CREDENTIALS = credentials('dockerhub-agent')
+    }
+
+    stages {
+        stage('GIT') {
+            steps {
+                git branch: "AchrefOCHI-5ARCTIC4-G2",
+                    url: "https://github.com/Achreef01/5ARCTIC4-G2-Kaddem.git"
+            }
+        }
+
+        stage('Verify Node.js Version') {
+            steps {
+                bat 'node --version' 
+                bat 'npm --version'  
+            }
+        }
+
+        stage('Install Dependencies') {
+            steps {
+                dir('kaddem-frontend') {
+                    bat 'npm install' 
+                }
+            }
+        }
+
+        stage('Build Angular Frontend') {
+            steps {
+                dir('kaddem-frontend') {
+                    bat 'npm run build --prod' 
+                }
+            }
+        }
+
+        stage('Build Docker Image for Frontend') {
+            steps {
+                dir('kaddem-frontend') {
+                    bat 'docker build -t kaddem-frontend .' 
+                }
+            }
+        }
+
+        
+
+        stage('Push Docker Image to Docker Hub for Frontend') {
+            steps {
+                dir('kaddem-frontend') {
+                    script {
+                        withCredentials([usernamePassword(credentialsId: 'dockerhub-agent', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
+                            echo "Attempting login with Docker username: ${DOCKER_USERNAME}"
+        
+                            
+                            powershell """
+                                \$password = '${DOCKER_PASSWORD}' | ConvertTo-SecureString -AsPlainText -Force
+                                \$credential = New-Object System.Management.Automation.PSCredential('${DOCKER_USERNAME}', \$password)
+                                docker login -u \$credential.UserName -p \$credential.GetNetworkCredential().Password
+                            """
+        
+                            
+                            bat "docker tag kaddem-frontend ${DOCKER_USERNAME}/kaddem-frontend:${BUILD_NUMBER}"
+                            bat "docker push ${DOCKER_USERNAME}/kaddem-frontend:${BUILD_NUMBER}"
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
